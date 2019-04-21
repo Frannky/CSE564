@@ -17,13 +17,20 @@ path {
     stroke-width: 1;
     shape-rendering: crispEdges;
 }
+.frame {
+    fill: none;
+}
 
 </style>
 <body>
 
 <div id="option">
-    <input name="updateButton" type="button" value="Update" onclick="updateData()" />
 </div>
+
+
+<input name="updateButton1" type="button" value="Elbow Plot" onclick="updateData('elbow')" />
+<div id="elbow"></div>
+
 
 <!-- load the d3.js library -->
 <script src="http://d3js.org/d3.v3.min.js"></script>
@@ -31,10 +38,13 @@ path {
 
 <script>
 
+const DURATION = 750
+
+
 var data = {{ data.chart_data | safe }}
 console.log(data);
 // Set the dimensions of the canvas / graph
-var margin = {top: 30, right: 20, bottom: 30, left: 50},
+var margin = {top: 30, right: 10, bottom: 30, left: 50},
     width = 600 - margin.left - margin.right,
     height = 270 - margin.top - margin.bottom;
 
@@ -44,7 +54,8 @@ var parseDate = d3.time.format("%d-%b-%y").parse;
 //var parseDate = d3.time.format("%Y-%m-%d").parse;
 
 // Set the ranges
-var x = d3.time.scale().range([0, width]);
+//var x = d3.time.scale().range([0, width]);
+var x = d3.scale.linear().range([0, width]);
 var y = d3.scale.linear().range([height, 0]);
 
 // Define the axes
@@ -56,34 +67,28 @@ var yAxis = d3.svg.axis().scale(y)
 
 // Define the line
 var valueline = d3.svg.line()
-    .x(function(d) { return x(d.date); })
-    .y(function(d) { return y(d.close); });
+    //.x(function(d) { return x(d.date); })
+    .x(function(d) { return x(d.x); })
+    //.y(function(d) { return y(d.close); });
+    .y(function(d) { return y(d.y); });
 
-var valueline2 = d3.svg.line()
-  .x(function(d){ return x(d.date);})
-  .y(function(d){ return y(d.open);});
+// Get the data
 
-// Adds the svg canvas
-var svg = d3.select("body")
+function drawdata(data, div){
+  // Scale the range of the data
+  //x.domain(d3.extent(data, function(d) { return d.date; }));
+  //y.domain([0, d3.max(data, function(d) { return d.close; })]);
+  x.domain(d3.extent(data, function(d) { return d.x; }));
+  y.domain([0, d3.max(data, function(d) { return d.y; })]);
+
+  // Adds the svg canvas for raw data
+  var svg = d3.select(div)
     .append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
     .append("g")
         .attr("transform",
               "translate(" + margin.left + "," + margin.top + ")");
-
-// Get the data
-
-function drawdata(data){
-  //console.log(data)
-  data.forEach(function(d) {
-      d.date = parseDate(d.date);
-      d.close = +d.close;
-  });
-
-  // Scale the range of the data
-  x.domain(d3.extent(data, function(d) { return d.date; }));
-  y.domain([0, d3.max(data, function(d) { return d.close; })]);
 
   // Add the valueline path.
   svg.append("path")
@@ -102,47 +107,204 @@ function drawdata(data){
       .call(yAxis);
 }
 
+function drawScatterPlot(data, div) {
+    x.domain(d3.extent(data, function(d) { return d.x; }));
+    y.domain(d3.extent(data, function(d) { return d.y; }));
 
-drawdata(data)
+  // Adds the svg canvas for raw data
+  var svg = d3.select(div)
+    .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+        .attr("transform",
+              "translate(" + margin.left + "," + margin.top + ")");
 
+  // Add the dots.
+  svg.append("g")
+        .selectAll("dot")
+        .data(data).enter()
+        .append("circle")
+            .attr("cx", function(d) {return x(d.x)})
+            .attr("cy", function(d) {return y(d.y)})
+            .attr("r", 1)
+            .style("fill", "#168eb9");
+
+  // Add the X Axis
+  svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis);
+
+  // Add the Y Axis
+  svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis);
+}
+
+function drawScatterPlotMatrix(data, div, attributes, pairs) {
+    blocksize = 200
+    
+    newWidth = blocksize * attributes.length
+    newHeight = blocksize * attributes.length
+    
+    x = d3.scale.linear().range([0, blocksize])
+    y = d3.scale.linear().range([blocksize, 0]);
+    
+    x.domain(d3.extent(data, function(d) { return d.x; }));
+    y.domain(d3.extent(data, function(d) { return d.y; }));
+
+    var domains = {};
+    attributes.forEach(function(attr) {
+        domains[attr] = d3.extent(data, function(d) {return d[attr];});
+    });
+    
+    // Adds the svg canvas for raw data
+    var svg = d3.select(div)
+        .append("svg")
+            .attr("width", newWidth + margin.left + margin.right)
+            .attr("height", newHeight + margin.top + margin.bottom)
+        .append("g")
+            .attr("transform",
+                "translate(" + margin.left + "," + margin.top + ")");
+
+    var svgCell = svg.selectAll(".cell")
+        .data(pairs).enter();
+
+    svgCell.append("g")
+        .attr("class", "cell")
+        .attr("transform", function(d) { 
+            return "translate(" + (attributes.length - d.i - 1) * blocksize + "," + d.j * blocksize + ")";
+        })
+        .each(drawCell);
+    
+    function drawCell(dataCell) {
+        var cell = d3.select(this);
+
+    x.domain(domains[dataCell.x]);
+    y.domain(domains[dataCell.y]);
+
+    cell.append("rect")
+        .attr("class", "frame")
+        .attr("x", 0)
+        .attr("y", 0)
+        .attr("width", blocksize)
+        .attr("height", blocksize);
+
+    // draw circle
+    cell.selectAll("circle")
+        .data(data)
+      .enter().append("circle")
+        .attr("cx", function(d) { return x(d[dataCell.x]); })
+        .attr("cy", function(d) { return y(d[dataCell.y]); })
+        .attr("r", 1)
+        .style("fill", "#168eb9");
+   
+    // not enough...
+        /* 
+    // Add the X Axis
+    cell.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + blocksize + ")")
+        .call(xAxis);
+
+    // Add the Y Axis
+    svg.append("g")
+        .attr("class", "y axis")
+        .attr("transform", "translate(0," + blocksize + ")")
+        .call(yAxis);
+        */
+  }
+}
+
+function updateData(plotname) {
+    $.post("", {'data': plotname}, function(data_infunc){
+        dataNew = JSON.parse(data_infunc.chart_data)
+        console.log(plotname);
+        console.log(dataNew);
+        drawdata(dataNew, "#" +  plotname);
+    })
+}
+
+function scatterPlot(plotname) {
+    $.post("", {'data': plotname}, function(data_infunc){
+        dataNew = JSON.parse(data_infunc.chart_data)
+        console.log(plotname);
+        console.log(dataNew);
+        drawScatterPlot(dataNew, "#" +  plotname);
+    })
+}
+
+function scatterPlotMatrix(plotname) {
+    $.post("", {'data': plotname}, function(data_infunc){
+        dataNew = JSON.parse(data_infunc.chart_data)
+        console.log(plotname);
+        console.log(dataNew);
+        
+        var attributes = d3.keys(dataNew[0]).filter(function(d) { return d});
+        pairs = getPairs(attributes, attributes);
+        drawScatterPlotMatrix(dataNew, "#" +  plotname, attributes, pairs);
+    })
+}
+
+function getPairs(a, b) {
+    var res = [];
+    var i = 0, j = 0;        
+    for (i = 0; i < a.length; i++) {
+        for (j = 0; j < b.length; j++) { 
+            res.push({
+                i: i, 
+                j: j, 
+                x: a[i], 
+                y: b[j]
+            });
+        }
+    }
+    return res;
+}
+
+/*
 // ** Update data section (Called from the onclick)
-function updateData() {
+function updateData(plotname) {
 
     // Get the data again
       // Request the "" page and send some additional data along (while still ignoring the return results).
     // $.post("", {'data': 'received'}, function(data_infunc){
       // console.log({data_infunc})
-      $.post("", {'data': 'received'}, function(data_infunc){
+      $.post("", {'data': plotname}, function(data_infunc){
+
       data2 = JSON.parse(data_infunc.chart_data)
       console.log(data2);
       data2.forEach(function(d) {
-      d.date = parseDate(d.date);
-      d.close = +d.close;
+        //d.date = parseDate(d.date);
+        //d.close = +d.close;
+        d.x = d.x;
+        d.y = d.y;
       });
 
       //console.log(data2);
       // Scale the range of the data again
-    	x.domain(d3.extent(data2, function(d) { return d.date; }));
-	    y.domain([0, d3.max(data2, function(d) { return d.close; })]);
+    	//x.domain(d3.extent(data2, function(d) { return d.date; }));
+	    //y.domain([0, d3.max(data2, function(d) { return d.close; })]);
+    	x.domain(d3.extent(data2, function(d) { return d.x; }));
+	    y.domain(d3.extent(data2, function(d) { return d.y; }));
 
     // Select the section we want to apply our changes to
-    var svg = d3.select("body").transition();
+    var svg = d3.select("#plot1").transition();
     //
     // // Make the changes
         svg.select(".line")   // change the line
-            .duration(750)
+            .duration(DURATION)
             .attr("d", valueline(data2));
         svg.select(".x.axis") // change the x axis
-            .duration(750)
+            .duration(DURATION)
             .call(xAxis);
         svg.select(".y.axis") // change the y axis
-            .duration(750)
+            .duration(DURATION)
             .call(yAxis);
     })
-
-
-
 }
+*/
 
 </script>
 </body>
