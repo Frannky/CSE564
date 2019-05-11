@@ -28,8 +28,8 @@ path {
 </div>
 
 
-<input name="updateButton1" type="button" value="Elbow Plot" onclick="updateData('elbow')" />
-<div id="elbow"></div>
+<input name="updateButton1" type="button" value="Elbow Plot" onclick="updateData('todo')" />
+<div id="todo"></div>
 
 
 <!-- load the d3.js library -->
@@ -76,8 +76,6 @@ var valueline = d3.svg.line()
 
 function drawdata(data, div){
   // Scale the range of the data
-  //x.domain(d3.extent(data, function(d) { return d.date; }));
-  //y.domain([0, d3.max(data, function(d) { return d.close; })]);
   x.domain(d3.extent(data, function(d) { return d.x; }));
   y.domain([0, d3.max(data, function(d) { return d.y; })]);
 
@@ -217,15 +215,6 @@ function drawScatterPlotMatrix(data, div, attributes, pairs) {
   }
 }
 
-function updateData(plotname) {
-    $.post("", {'data': plotname}, function(data_infunc){
-        dataNew = JSON.parse(data_infunc.chart_data)
-        console.log(plotname);
-        console.log(dataNew);
-        drawdata(dataNew, "#" +  plotname);
-    })
-}
-
 function scatterPlot(plotname) {
     $.post("", {'data': plotname}, function(data_infunc){
         dataNew = JSON.parse(data_infunc.chart_data)
@@ -249,13 +238,13 @@ function scatterPlotMatrix(plotname) {
 
 function getPairs(a, b) {
     var res = [];
-    var i = 0, j = 0;        
+    var i = 0, j = 0;
     for (i = 0; i < a.length; i++) {
-        for (j = 0; j < b.length; j++) { 
+        for (j = 0; j < b.length; j++) {
             res.push({
-                i: i, 
-                j: j, 
-                x: a[i], 
+                i: i,
+                j: j,
+                x: a[i],
                 y: b[j]
             });
         }
@@ -263,48 +252,14 @@ function getPairs(a, b) {
     return res;
 }
 
-/*
-// ** Update data section (Called from the onclick)
 function updateData(plotname) {
-
-    // Get the data again
-      // Request the "" page and send some additional data along (while still ignoring the return results).
-    // $.post("", {'data': 'received'}, function(data_infunc){
-      // console.log({data_infunc})
-      $.post("", {'data': plotname}, function(data_infunc){
-
-      data2 = JSON.parse(data_infunc.chart_data)
-      console.log(data2);
-      data2.forEach(function(d) {
-        //d.date = parseDate(d.date);
-        //d.close = +d.close;
-        d.x = d.x;
-        d.y = d.y;
-      });
-
-      //console.log(data2);
-      // Scale the range of the data again
-    	//x.domain(d3.extent(data2, function(d) { return d.date; }));
-	    //y.domain([0, d3.max(data2, function(d) { return d.close; })]);
-    	x.domain(d3.extent(data2, function(d) { return d.x; }));
-	    y.domain(d3.extent(data2, function(d) { return d.y; }));
-
-    // Select the section we want to apply our changes to
-    var svg = d3.select("#plot1").transition();
-    //
-    // // Make the changes
-        svg.select(".line")   // change the line
-            .duration(DURATION)
-            .attr("d", valueline(data2));
-        svg.select(".x.axis") // change the x axis
-            .duration(DURATION)
-            .call(xAxis);
-        svg.select(".y.axis") // change the y axis
-            .duration(DURATION)
-            .call(yAxis);
+    $.post("", {'data': plotname}, function(data_infunc){
+        dataNew = JSON.parse(data_infunc.chart_data)
+        console.log(plotname);
+        console.log(dataNew);
+        drawdata(dataNew, "#" +  plotname);
     })
 }
-*/
 
 </script>
 </body>

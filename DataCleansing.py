@@ -76,6 +76,7 @@ def getDroplistOccupation(soccode):
                 if not x.isnumeric():
                     res.append(x)
     res.append(None)
+    return res
 
 def main():
     dfH1B = pd.read_csv(ct.PATH_H1B + "merged" + ct.EXT_TO, low_memory=False)
@@ -89,13 +90,11 @@ def main():
     dfH1B = pd.concat(dfs)
     dfH1B.to_csv(ct.PATH_H1B + "merged" + ct.EXT_TO, index=False)
 
-
-
 def numeric():
     dfH1B = pd.read_csv(ct.PATH_H1B + "merged" + ct.EXT_TO, low_memory=False)
 
     # Numeric occupation
-    droplistOccupation = getDroplistOccupation()
+    droplistOccupation = getDroplistOccupation(dfH1B.SOC_CODE)
     dfH1B = dfH1B[~dfH1B['SOC_CODE'].isin(droplistOccupation)]
     dfH1B['OCCUPATION'] = dfH1B.apply(lambda row: getOccupation(row), axis=1)
     dfH1B['OCCUPATION'] = dfH1B['OCCUPATION'].astype(int)
@@ -111,4 +110,4 @@ def numeric():
 
     dfH1B.to_csv(ct.PATH_H1B + "numeric" + ct.EXT_TO, index=False)
 
-#numeric()
+numeric()

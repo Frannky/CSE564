@@ -43,9 +43,10 @@ def index():
         return jsonify(data) # Should be a json string
 
     elif request.method == 'GET':
-        data = data[['wfood','income']]
-        data = data.rename(columns={'STATES':'x', 'VISA': 'y'})
-        chart_data = data.to_dict(orient='records')
+        # data = data[['STATUS','YEAR']]
+        # data = data.rename(columns={'STATES':'x', 'YEAR': 'y'})
+        chart_data = {'x': [1, 2], 'y': [3, 4]}
+        # chart_data = data.to_dict(orient='records')
         chart_data = json.dumps(chart_data, indent=2)
         data = {'chart_data': chart_data}
         return render_template("index.html", data=data)
@@ -155,5 +156,5 @@ def getDataSub(data, k):
 #     return resDataframe
 
 if __name__ == "app":
-    dataH1B = pd.read_csv(ct.PATH_H1B + "numeric" + ct.EXT_TO, index=False)
+    dataH1B = pd.read_csv(ct.PATH_H1B + "numeric" + ct.EXT_TO, low_memory=False)
     app.run(debug=True)
