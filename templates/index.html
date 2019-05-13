@@ -1,266 +1,427 @@
 <!DOCTYPE html>
-<meta charset="utf-8">
-<style> /* set the CSS */
+<head>
+    <meta charset="utf-8">
 
-body { font: 12px Arial;}
+    <title>H1B data visualization</title>
+    <!-- Styles -->
+    <link rel="stylesheet" href="../static/lib/bootstrap-4.3.1-dist/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Droid+Sans" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" href="../static/lib/fontawesome-pro-5.8.2-web/css/all.css">
+</head>
 
-path {
-    stroke: steelblue;
-    stroke-width: 2;
-    fill: none;
-}
-
-.axis path,
-.axis line {
-    fill: none;
-    stroke: grey;
-    stroke-width: 1;
-    shape-rendering: crispEdges;
-}
-.frame {
-    fill: none;
-}
-
-</style>
 <body>
+    <aside class="side-nav" id="show-side-navigation1">
+        <i class="fa fa-bars close-aside hidden-sm hidden-md hidden-lg" data-close="show-side-navigation1"></i>
+        <div class="heading">
+            <div class="info">
+                <h3><a href="#">Final Project</a></h3>
+                <p>Visualization</p>
+            </div>
+        </div>
+        <ul class="categories">
+            <li>
+                <i class="fal fa-calendar-alt" aria-hidden="true"></i>
+                <a href="#"> H1B</a>
+                <ul class="side-nav-dropdown">
+                    <li><a href="{{ url_for('gridmap') }}">Grid Map</a></li>
+                    <li><a href="#" onclick="updateP('EmployerPeitionRank')">Top Petitions</a></li>
+                    <li><a href="#">2015</a></li>
+                    <li><a href="#">2016</a></li>
+                    <li><a href="#">2017</a></li>
+                    <li><a href="#">2018</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#"> PERM data</a>
+                <ul class="side-nav-dropdown">
+                    <li><a href="#">1</a></li>
+                    <li><a href="#">2</a></li>
+                </ul>
+            </li>
+        </ul>
+    </aside>
 
-<div id="option">
-</div>
+    <section id="contents">
+        <div class="welcome">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-11">
+                        <div class="content">
+                            <h2>Overview for H1B data</h2>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="content">
+                            <h2><a href="#"><i data-show="show-side-navigation1" class="fas fa-toggle-on show-side-btn"></i></a><h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+        <section class="statistics">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="box"  id="EmployerPeitionRank2014">
+                            <p>2014</p>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="box" id="EmployerPeitionRank2015">
+                            <p>2015</p>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="box" id="EmployerPeitionRank2016">
+                            <p>2016</p>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="box" id="EmployerPeitionRank2017">
+                            <p>2017</p>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="box" id="EmployerPeitionRank2018">
+                            <p>2018</p>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="box">
+                            <p>To be continued...</p>
 
-<input name="updateButton1" type="button" value="Elbow Plot" onclick="updateData('todo')" />
-<div id="todo"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="charts">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="chart-container">
+                            <h3>Chart</h3>
+                            <canvas id="myChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="chart-container">
+                            <h3>Chart2</h3>
+                            <canvas id="myChart2"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
+        <section class='statis text-center'>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="box bg-primary">
+                            <i class="fa fa-eye"></i>
+                            <h3>5,154</h3>
+                            <p class="lead">Page views</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="box danger">
+                            <i class="fa fa-user-o"></i>
+                            <h3>245</h3>
+                            <p class="lead">User registered</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="box warning">
+                            <i class="fa fa-shopping-cart"></i>
+                            <h3>5,154</h3>
+                            <p class="lead">Product sales</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="box success">
+                            <i class="fa fa-handshake-o"></i>
+                            <h3>5,154</h3>
+                            <p class="lead">Transactions</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="chrt3">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-9">
+                        <div class="chart-container">
+                            <canvas id="chart3" width="100%"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="box">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-<!-- load the d3.js library -->
-<script src="http://d3js.org/d3.v3.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <div class="overlay"></div>
+    </section>
 
-<script>
+    <!-- load the d3.js library -->
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="../static/js/script.js"></script>
 
-const DURATION = 750
+    <script>
+        const DURATION = 750;
 
+        var data = {{data.chart_data | safe}};
+        console.log(data);
 
-var data = {{ data.chart_data | safe }}
-console.log(data);
-// Set the dimensions of the canvas / graph
-var margin = {top: 30, right: 10, bottom: 30, left: 50},
-    width = 600 - margin.left - margin.right,
-    height = 270 - margin.top - margin.bottom;
+        // Set the dimensions of the canvas / graph
+        var margin = {top: 30, right: 10, bottom: 30, left: 50},
+            width = 600 - margin.left - margin.right,
+            height = 270 - margin.top - margin.bottom;
 
-// Parse the date / time
-var parseDate = d3.time.format("%d-%b-%y").parse;
-//var parseDate = d3.time.format("%y-%b-%d").parse;
-//var parseDate = d3.time.format("%Y-%m-%d").parse;
+        // Parse the date / time
+        var parseDate = d3.time.format("%d-%b-%y").parse;
+        //var parseDate = d3.time.format("%y-%b-%d").parse;
+        //var parseDate = d3.time.format("%Y-%m-%d").parse;
 
-// Set the ranges
-//var x = d3.time.scale().range([0, width]);
-var x = d3.scale.linear().range([0, width]);
-var y = d3.scale.linear().range([height, 0]);
+        // Set the ranges
+        //var x = d3.time.scale().range([0, width]);
+        var x = d3.scale.linear().range([0, width]);
+        var y = d3.scale.linear().range([height, 0]);
 
-// Define the axes
-var xAxis = d3.svg.axis().scale(x)
-    .orient("bottom").ticks(5);
+        // Define the axes
+        var xAxis = d3.svg.axis().scale(x)
+            .orient("bottom").ticks(5);
 
-var yAxis = d3.svg.axis().scale(y)
-    .orient("left").ticks(5);
+        var yAxis = d3.svg.axis().scale(y)
+            .orient("left").ticks(5);
 
-// Define the line
-var valueline = d3.svg.line()
-    //.x(function(d) { return x(d.date); })
-    .x(function(d) { return x(d.x); })
-    //.y(function(d) { return y(d.close); });
-    .y(function(d) { return y(d.y); });
+        // Define the line
+        var valueline = d3.svg.line()
+            //.x(function(d) { return x(d.date); })
+            .x(function(d) { return x(d.x); })
+            //.y(function(d) { return y(d.close); });
+            .y(function(d) { return y(d.y); });
 
-// Get the data
+        // Get the data
 
-function drawdata(data, div){
-  // Scale the range of the data
-  x.domain(d3.extent(data, function(d) { return d.x; }));
-  y.domain([0, d3.max(data, function(d) { return d.y; })]);
+        function drawdata(data, div){
+          // Scale the range of the data
+          x.domain(d3.extent(data, function(d) { return d.x; }));
+          y.domain([0, d3.max(data, function(d) { return d.y; })]);
 
-  // Adds the svg canvas for raw data
-  var svg = d3.select(div)
-    .append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-        .attr("transform",
-              "translate(" + margin.left + "," + margin.top + ")");
+          // Adds the svg canvas for raw data
+          var svg = d3.select(div)
+            .append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+                .attr("transform",
+                      "translate(" + margin.left + "," + margin.top + ")");
 
-  // Add the valueline path.
-  svg.append("path")
-      .attr("class", "line")
-      .attr("d", valueline(data));
+          // Add the valueline path.
+          svg.append("path")
+              .attr("class", "line")
+              .attr("d", valueline(data));
 
-  // Add the X Axis
-  svg.append("g")
-      .attr("class", "x axis")
-      .attr("transform", "translate(0," + height + ")")
-      .call(xAxis);
+          // Add the X Axis
+          svg.append("g")
+              .attr("class", "x axis")
+              .attr("transform", "translate(0," + height + ")")
+              .call(xAxis);
 
-  // Add the Y Axis
-  svg.append("g")
-      .attr("class", "y axis")
-      .call(yAxis);
-}
-
-function drawScatterPlot(data, div) {
-    x.domain(d3.extent(data, function(d) { return d.x; }));
-    y.domain(d3.extent(data, function(d) { return d.y; }));
-
-  // Adds the svg canvas for raw data
-  var svg = d3.select(div)
-    .append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-        .attr("transform",
-              "translate(" + margin.left + "," + margin.top + ")");
-
-  // Add the dots.
-  svg.append("g")
-        .selectAll("dot")
-        .data(data).enter()
-        .append("circle")
-            .attr("cx", function(d) {return x(d.x)})
-            .attr("cy", function(d) {return y(d.y)})
-            .attr("r", 1)
-            .style("fill", "#168eb9");
-
-  // Add the X Axis
-  svg.append("g")
-      .attr("class", "x axis")
-      .attr("transform", "translate(0," + height + ")")
-      .call(xAxis);
-
-  // Add the Y Axis
-  svg.append("g")
-      .attr("class", "y axis")
-      .call(yAxis);
-}
-
-function drawScatterPlotMatrix(data, div, attributes, pairs) {
-    blocksize = 200
-    
-    newWidth = blocksize * attributes.length
-    newHeight = blocksize * attributes.length
-    
-    x = d3.scale.linear().range([0, blocksize])
-    y = d3.scale.linear().range([blocksize, 0]);
-    
-    x.domain(d3.extent(data, function(d) { return d.x; }));
-    y.domain(d3.extent(data, function(d) { return d.y; }));
-
-    var domains = {};
-    attributes.forEach(function(attr) {
-        domains[attr] = d3.extent(data, function(d) {return d[attr];});
-    });
-    
-    // Adds the svg canvas for raw data
-    var svg = d3.select(div)
-        .append("svg")
-            .attr("width", newWidth + margin.left + margin.right)
-            .attr("height", newHeight + margin.top + margin.bottom)
-        .append("g")
-            .attr("transform",
-                "translate(" + margin.left + "," + margin.top + ")");
-
-    var svgCell = svg.selectAll(".cell")
-        .data(pairs).enter();
-
-    svgCell.append("g")
-        .attr("class", "cell")
-        .attr("transform", function(d) { 
-            return "translate(" + (attributes.length - d.i - 1) * blocksize + "," + d.j * blocksize + ")";
-        })
-        .each(drawCell);
-    
-    function drawCell(dataCell) {
-        var cell = d3.select(this);
-
-    x.domain(domains[dataCell.x]);
-    y.domain(domains[dataCell.y]);
-
-    cell.append("rect")
-        .attr("class", "frame")
-        .attr("x", 0)
-        .attr("y", 0)
-        .attr("width", blocksize)
-        .attr("height", blocksize);
-
-    // draw circle
-    cell.selectAll("circle")
-        .data(data)
-      .enter().append("circle")
-        .attr("cx", function(d) { return x(d[dataCell.x]); })
-        .attr("cy", function(d) { return y(d[dataCell.y]); })
-        .attr("r", 1)
-        .style("fill", "#168eb9");
-   
-    // not enough...
-        /* 
-    // Add the X Axis
-    cell.append("g")
-        .attr("class", "x axis")
-        .attr("transform", "translate(0," + blocksize + ")")
-        .call(xAxis);
-
-    // Add the Y Axis
-    svg.append("g")
-        .attr("class", "y axis")
-        .attr("transform", "translate(0," + blocksize + ")")
-        .call(yAxis);
-        */
-  }
-}
-
-function scatterPlot(plotname) {
-    $.post("", {'data': plotname}, function(data_infunc){
-        dataNew = JSON.parse(data_infunc.chart_data)
-        console.log(plotname);
-        console.log(dataNew);
-        drawScatterPlot(dataNew, "#" +  plotname);
-    })
-}
-
-function scatterPlotMatrix(plotname) {
-    $.post("", {'data': plotname}, function(data_infunc){
-        dataNew = JSON.parse(data_infunc.chart_data)
-        console.log(plotname);
-        console.log(dataNew);
-        
-        var attributes = d3.keys(dataNew[0]).filter(function(d) { return d});
-        pairs = getPairs(attributes, attributes);
-        drawScatterPlotMatrix(dataNew, "#" +  plotname, attributes, pairs);
-    })
-}
-
-function getPairs(a, b) {
-    var res = [];
-    var i = 0, j = 0;
-    for (i = 0; i < a.length; i++) {
-        for (j = 0; j < b.length; j++) {
-            res.push({
-                i: i,
-                j: j,
-                x: a[i],
-                y: b[j]
-            });
+          // Add the Y Axis
+          svg.append("g")
+              .attr("class", "y axis")
+              .call(yAxis);
         }
-    }
-    return res;
-}
 
-function updateData(plotname) {
-    $.post("", {'data': plotname}, function(data_infunc){
-        dataNew = JSON.parse(data_infunc.chart_data)
-        console.log(plotname);
-        console.log(dataNew);
-        drawdata(dataNew, "#" +  plotname);
-    })
-}
+        function drawScatterPlot(data, div) {
+            x.domain(d3.extent(data, function(d) { return d.x; }));
+            y.domain(d3.extent(data, function(d) { return d.y; }));
 
-</script>
+          // Adds the svg canvas for raw data
+          var svg = d3.select(div)
+            .append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+                .attr("transform",
+                      "translate(" + margin.left + "," + margin.top + ")");
+
+          // Add the dots.
+          svg.append("g")
+                .selectAll("dot")
+                .data(data).enter()
+                .append("circle")
+                    .attr("cx", function(d) {return x(d.x)})
+                    .attr("cy", function(d) {return y(d.y)})
+                    .attr("r", 1)
+                    .style("fill", "#168eb9");
+
+          // Add the X Axis
+          svg.append("g")
+              .attr("class", "x axis")
+              .attr("transform", "translate(0," + height + ")")
+              .call(xAxis);
+
+          // Add the Y Axis
+          svg.append("g")
+              .attr("class", "y axis")
+              .call(yAxis);
+        }
+
+        function drawScatterPlotMatrix(data, div, attributes, pairs) {
+            blocksize = 200
+
+            newWidth = blocksize * attributes.length
+            newHeight = blocksize * attributes.length
+
+            x = d3.scale.linear().range([0, blocksize])
+            y = d3.scale.linear().range([blocksize, 0]);
+
+            x.domain(d3.extent(data, function(d) { return d.x; }));
+            y.domain(d3.extent(data, function(d) { return d.y; }));
+
+            var domains = {};
+            attributes.forEach(function(attr) {
+                domains[attr] = d3.extent(data, function(d) {return d[attr];});
+            });
+
+            // Adds the svg canvas for raw data
+            var svg = d3.select(div)
+                .append("svg")
+                    .attr("width", newWidth + margin.left + margin.right)
+                    .attr("height", newHeight + margin.top + margin.bottom)
+                .append("g")
+                    .attr("transform",
+                        "translate(" + margin.left + "," + margin.top + ")");
+
+            var svgCell = svg.selectAll(".cell")
+                .data(pairs).enter();
+
+            svgCell.append("g")
+                .attr("class", "cell")
+                .attr("transform", function(d) {
+                    return "translate(" + (attributes.length - d.i - 1) * blocksize + "," + d.j * blocksize + ")";
+                })
+                .each(drawCell);
+
+            function drawCell(dataCell) {
+                var cell = d3.select(this);
+
+            x.domain(domains[dataCell.x]);
+            y.domain(domains[dataCell.y]);
+
+            cell.append("rect")
+                .attr("class", "frame")
+                .attr("x", 0)
+                .attr("y", 0)
+                .attr("width", blocksize)
+                .attr("height", blocksize);
+
+            // draw circle
+            cell.selectAll("circle")
+                .data(data)
+              .enter().append("circle")
+                .attr("cx", function(d) { return x(d[dataCell.x]); })
+                .attr("cy", function(d) { return y(d[dataCell.y]); })
+                .attr("r", 1)
+                .style("fill", "#168eb9");
+
+            // not enough...
+                /*
+            // Add the X Axis
+            cell.append("g")
+                .attr("class", "x axis")
+                .attr("transform", "translate(0," + blocksize + ")")
+                .call(xAxis);
+
+            // Add the Y Axis
+            svg.append("g")
+                .attr("class", "y axis")
+                .attr("transform", "translate(0," + blocksize + ")")
+                .call(yAxis);
+                */
+          }
+        }
+
+        function scatterPlot(plotname) {
+            $.post("", {'data': plotname}, function(data_infunc){
+                dataNew = JSON.parse(data_infunc.chart_data)
+                console.log(plotname);
+                console.log(dataNew);
+                drawScatterPlot(dataNew, "#" +  plotname);
+            })
+        }
+
+        function scatterPlotMatrix(plotname) {
+            $.post("", {'data': plotname}, function(data_infunc){
+                dataNew = JSON.parse(data_infunc.chart_data)
+                console.log(plotname);
+                console.log(dataNew);
+
+                var attributes = d3.keys(dataNew[0]).filter(function(d) { return d});
+                pairs = getPairs(attributes, attributes);
+                drawScatterPlotMatrix(dataNew, "#" +  plotname, attributes, pairs);
+            })
+        }
+
+        function getPairs(a, b) {
+            var res = [];
+            var i = 0, j = 0;
+            for (i = 0; i < a.length; i++) {
+                for (j = 0; j < b.length; j++) {
+                    res.push({
+                        i: i,
+                        j: j,
+                        x: a[i],
+                        y: b[j]
+                    });
+                }
+            }
+            return res;
+        }
+
+        function updateData(plotname) {
+            $.post("", {'data': plotname}, function(data_infunc){
+                dataNew = JSON.parse(data_infunc.chart_data)
+                console.log(plotname);
+                console.log(dataNew);
+                drawdata(dataNew, "#" +  plotname);
+            })
+        }
+
+        function updateP(labelname) {
+            $.post("", {'data': labelname}, function(data_infunc){
+                dataNew = JSON.parse(data_infunc.chart_data)
+                console.log(labelname);
+                console.log(dataNew);
+
+                var divtext = document.getElementById(labelname + "2014");
+                if (divtext.childElementCount == 1) {
+                    var counts = [1, 1, 1, 1, 1]
+                    var i;
+                    for (i = 0; i < dataNew.length; i++) {
+                        year = dataNew[i]["YEAR"]
+                        var div = document.getElementById(labelname + year);
+                        var para = document.createElement("p");
+                        var node = document.createTextNode(counts[year - 2014] + ": " + dataNew[i]["EMPLOYER"]);
+                        counts[year - 2014]++;
+                        para.appendChild(node);
+                        div.appendChild(para)
+                    }
+                }
+            })
+        }
+    </script>
 </body>
 </html>

@@ -1,6 +1,6 @@
 import json
 
-from flask import Flask, render_template, request, redirect, Response, jsonify
+from flask import Flask, render_template, request, redirect, Response, jsonify, url_for
 import pandas as pd
 import numpy as np
 import random as rd
@@ -10,6 +10,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.decomposition import PCA
 from sklearn.manifold import MDS
 import const as ct
+import string
 
 #dataRaw
 #dataRandom
@@ -22,6 +23,8 @@ app = Flask(__name__)
 def index():
     #df = pd.read_csv('data.csv').drop('Open', axis=1)
     global dataH1B
+    global dataEmployerPartition
+
     data = dataH1B
 
     #The current request method is available by using the method attribute
@@ -29,13 +32,15 @@ def index():
         # KMeans: k <- 3
         if request.form['data'] == 'corrMatrix':
             data = data.corr()
-        if request.form['data'] == 'covMatrix':
+        elif request.form['data'] == 'covMatrix':
             data = data.cov()
+        elif request.form['data'] == 'EmployerPeitionRank':
+            nEmployerPartition= 10
+            data = getEmployerPartitionForYear(dataEmployerPartition, nEmployerPartition)
         else:
             print("wrong data request")
             return
-        # print(request.form['data'])
-        # print(data)
+
         chart_data = data.to_dict(orient='records')
         chart_data = json.dumps(chart_data, indent=2)
         data = {'chart_data': chart_data}
@@ -55,6 +60,14 @@ def index():
 # def index():
     ###
 
+@app.route("/gridmap", methods = ['POST', 'GET'])
+def gridmap():
+    chart_data = {'x': [1, 2], 'y': [3, 4]}
+    # chart_data = data.to_dict(orient='records')
+    chart_data = json.dumps(chart_data, indent=2)
+    data = {'chart_data': chart_data}
+    return render_template('gridmap.html', data=data)
+
 # def getScatterMDS(data):
 #     dataframe = applyMDS(data, 2)
 #     res = dataframe.rename(columns={'mds-1':'x', 'mds-2': 'y'})
@@ -68,24 +81,6 @@ def index():
 #     print("plot for PCA")
 #     print(res)
 #     return res
-#
-def getDataSub(data, k):
-    nCol = len(data.columns)
-    pcaObj = PCA(n_components=4).fit(data)
-    variances = pcaObj.explained_variance_
-    indexes = ['pc-' + str(i) for i in range(1, 4+1)]
-    components = pcaObj.components_
-    dfComponent = pd.DataFrame(components, columns = ct.COL_NAMES, index = indexes)
-    # print(dfComponent)
-    dfComponent = dfComponent.pow(2)
-    # print(dfComponent)
-    dfComponent = dfComponent.sum(axis = 0)
-    # print(type(dfComponent))
-    kCols = dfComponent.nlargest(k).index
-    # print(kCols)
-    res = data[kCols]
-    # print(res)
-    return res
 #
 # def applyMDS(data, n_components):
 #     nCol = len(data.columns)
@@ -140,21 +135,24 @@ def getDataSub(data, k):
 #         yVals.append(KMeans(n_clusters = i).fit(data).inertia_)
 #     dataframe = pd.DataFrame({'x':xVals, 'y': yVals})
 #     return dataframe
-#
-# def randomSampling(data):
-#     return data.sample(frac = ct.DATA_FRAC)
-#
-# def stratifiedSampling(data):
-#     # @ k: 3
-#     # @ labels_:
-#     #     Labels of each point
-#     cluster= KMeans(n_clusters = 3).fit(data).labels_
-#     #data['cluster'] = cluster
-#     #res = dataWithCluster.groupby('cluster').apply(lambda x: x.sample(frac = ct.DATA_FRAC))
-#     train, test = train_test_split(data, test_size = ct.DATA_FRAC, stratify = cluster)
-#     resDataframe = pd.DataFrame(test)
-#     return resDataframe
+
+# data[Y].[:N] will get the top n companies in year Y
+def getEmployerPartition(data):
+    return data.groupby(['YEAR']).EMPLOYER.apply(pd.value_counts)
+
+def getEmployerPartitionForYear(data, num):
+    res = []
+    for year in ct.YEARS:
+        dfYear = data[year][:num].to_frame().rename(columns={'EMPLOYER': 'PETITION'})
+        dfYear['EMPLOYER'] = dfYear.index
+        dfYear['EMPLOYER'] = dfYear['EMPLOYER'].apply(
+            lambda x: string.capwords(x))
+        dfYear['YEAR'] = year
+        res.append(dfYear)
+    res = pd.concat(res)
+    return res
 
 if __name__ == "app":
     dataH1B = pd.read_csv(ct.PATH_H1B + "numeric" + ct.EXT_TO, low_memory=False)
+    dataEmployerPartition = getEmployerPartition(dataH1B)
     app.run(debug=True)
