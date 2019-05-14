@@ -68,6 +68,23 @@ def gridmap():
     data = {'chart_data': chart_data}
     return render_template('gridmap.html', data=data)
 
+@app.route("/heatmap", methods = ['POST', 'GET'])
+def heatmap():
+    #global dataH1B
+    data = dataH1B.corr()
+    chart_data = data.to_dict(orient='records')
+    chart_data = json.dumps(chart_data, indent=2)
+    data = {'chart_data': chart_data}
+    return render_template('heatmap.html', data=data)
+
+@app.route("/test", methods = ['POST', 'GET'])
+def test():
+    chart_data = {'x': [1, 2], 'y': [3, 4]}
+    # chart_data = data.to_dict(orient='records')
+    chart_data = json.dumps(chart_data, indent=2)
+    data = {'chart_data': chart_data}
+    return render_template('test.html', data=data)
+
 # def getScatterMDS(data):
 #     dataframe = applyMDS(data, 2)
 #     res = dataframe.rename(columns={'mds-1':'x', 'mds-2': 'y'})
