@@ -19,7 +19,7 @@ var rectMap_color = d3
     .range(["#efefef", "#ff8c00"]);
 
 var rectMap_svg = d3.select("svg"),
-    rectMap_margin = {top: 20, right: 20, bottom: 30, left: 20},
+    rectMap_margin = CT_MARGIN,
     rectMap_width = +rectMap_svg.attr("width") - rectMap_margin.left - rectMap_margin.right,
     rectMap_height = +rectMap_svg.attr("height") - rectMap_margin.top - rectMap_margin.bottom;
 

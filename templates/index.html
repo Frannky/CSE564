@@ -24,7 +24,10 @@
                 <i class="fal fa-calendar-alt" aria-hidden="true"></i>
                 <a href="#"> H1B</a>
                 <ul class="side-nav-dropdown">
+                    <li><a href="{{ url_for('test') }}">Test</a></li>
+                    <li><a href="{{ url_for('index') }}">Overview</a></li>
                     <li><a href="{{ url_for('gridmap') }}">Grid Map</a></li>
+                    <li><a href="{{ url_for('heatmap') }}">Heat Map</a></li>
                     <li><a href="#" onclick="updateP('EmployerPeitionRank')">Top Petitions</a></li>
                     <li><a href="#">2015</a></li>
                     <li><a href="#">2016</a></li>
@@ -53,7 +56,7 @@
                     </div>
                     <div class="col-md-1">
                         <div class="content">
-                            <h2><a href="#"><i data-show="show-side-navigation1" class="fas fa-toggle-on show-side-btn"></i></a><h2>
+                            <h2><a href="#"><i data-show="show-side-navigation1" class="fas fa-toggle-on show-side-btn"></i></a></h2>
                         </div>
                     </div>
                 </div>
@@ -174,6 +177,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <script src="../static/js/const.js"></script>
     <script src="../static/js/script.js"></script>
 
     <script>
@@ -182,102 +187,6 @@
         var data = {{data.chart_data | safe}};
         console.log(data);
 
-        // Set the dimensions of the canvas / graph
-        var margin = {top: 30, right: 10, bottom: 30, left: 50},
-            width = 600 - margin.left - margin.right,
-            height = 270 - margin.top - margin.bottom;
-
-        // Parse the date / time
-        var parseDate = d3.time.format("%d-%b-%y").parse;
-        //var parseDate = d3.time.format("%y-%b-%d").parse;
-        //var parseDate = d3.time.format("%Y-%m-%d").parse;
-
-        // Set the ranges
-        //var x = d3.time.scale().range([0, width]);
-        var x = d3.scale.linear().range([0, width]);
-        var y = d3.scale.linear().range([height, 0]);
-
-        // Define the axes
-        var xAxis = d3.svg.axis().scale(x)
-            .orient("bottom").ticks(5);
-
-        var yAxis = d3.svg.axis().scale(y)
-            .orient("left").ticks(5);
-
-        // Define the line
-        var valueline = d3.svg.line()
-            //.x(function(d) { return x(d.date); })
-            .x(function(d) { return x(d.x); })
-            //.y(function(d) { return y(d.close); });
-            .y(function(d) { return y(d.y); });
-
-        // Get the data
-
-        function drawdata(data, div){
-          // Scale the range of the data
-          x.domain(d3.extent(data, function(d) { return d.x; }));
-          y.domain([0, d3.max(data, function(d) { return d.y; })]);
-
-          // Adds the svg canvas for raw data
-          var svg = d3.select(div)
-            .append("svg")
-                .attr("width", width + margin.left + margin.right)
-                .attr("height", height + margin.top + margin.bottom)
-            .append("g")
-                .attr("transform",
-                      "translate(" + margin.left + "," + margin.top + ")");
-
-          // Add the valueline path.
-          svg.append("path")
-              .attr("class", "line")
-              .attr("d", valueline(data));
-
-          // Add the X Axis
-          svg.append("g")
-              .attr("class", "x axis")
-              .attr("transform", "translate(0," + height + ")")
-              .call(xAxis);
-
-          // Add the Y Axis
-          svg.append("g")
-              .attr("class", "y axis")
-              .call(yAxis);
-        }
-
-        function drawScatterPlot(data, div) {
-            x.domain(d3.extent(data, function(d) { return d.x; }));
-            y.domain(d3.extent(data, function(d) { return d.y; }));
-
-          // Adds the svg canvas for raw data
-          var svg = d3.select(div)
-            .append("svg")
-                .attr("width", width + margin.left + margin.right)
-                .attr("height", height + margin.top + margin.bottom)
-            .append("g")
-                .attr("transform",
-                      "translate(" + margin.left + "," + margin.top + ")");
-
-          // Add the dots.
-          svg.append("g")
-                .selectAll("dot")
-                .data(data).enter()
-                .append("circle")
-                    .attr("cx", function(d) {return x(d.x)})
-                    .attr("cy", function(d) {return y(d.y)})
-                    .attr("r", 1)
-                    .style("fill", "#168eb9");
-
-          // Add the X Axis
-          svg.append("g")
-              .attr("class", "x axis")
-              .attr("transform", "translate(0," + height + ")")
-              .call(xAxis);
-
-          // Add the Y Axis
-          svg.append("g")
-              .attr("class", "y axis")
-              .call(yAxis);
-        }
 
         function drawScatterPlotMatrix(data, div, attributes, pairs) {
             blocksize = 200
