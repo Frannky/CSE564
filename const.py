@@ -4,11 +4,25 @@ COL_NAMES = ["wfood","whouse","wmisc","pfood","phouse","pmisc","totexp","year","
 # DATA_FRAC = 0.5
 
 PATH_H1B = 'data\H-1B_'
+PATH_PWD = 'data\PWD_'
+PATH_PERM = 'data\PERM_'
 EXT_ORI = '.xlsx'
 EXT_TO = '.csv'
 
-STATES = ["AK","AL","AR","AZ","CA","CO","CT","DC","DE","FL","GA","GU","HI","IA","ID", "IL","IN","KS","KY","LA","MA","MD","ME","MH","MI","MN","MO","MS","MT","NC","ND","NE","NH","NJ","NM","NV","NY", "OH","OK","OR","PA","PR","PW","RI","SC","SD","TN","TX","UT","VA","VI","VT","WA","WI","WV","WY"]
-STATUS = ['CERTIFIED-WITHDRAWN', 'CERTIFIED', 'DENIED', 'WITHDRAWN', 'REJECTED']
+STATES = ["AK","AL","AR","AZ","CA","CO","CT","DC","DE","FL","GA","GU","HI","IA","ID", "IL","IN","KS","KY","LA","MA","MD","ME","MH","MI","MN","MO","MP","MS","MT","NC","ND","NE","NH","NJ","NM","NV","NY", "OH","OK","OR","PA","PR","PW","RI","SC","SD","TN","TX","UT","VA","VI","VT","WA","WI","WV","WY"]
+STATES_FULL = ["ALASKA","ALABAMA","ARKANSAS","ARIZONA","CALIFORNIA","COLORADO","CONNECTICUT","DISTRICT OF COLUMBIA","DELAWARE","FLORIDA",
+               "GEORGIA","GUAM","HAWAII","IOWA","IDAHO", "ILLINOIS","INDIANA","KANSAS","KENTUCKY","LOUISIANA","MASSACHUSETTS","MARYLAND",
+               "MAINE","MARSHALL ISLANDS","MICHIGAN","MINNESOTA","MISSOURI", "NORTHERN MARIANA ISLANDS","MISSISSIPPI","MONTANA","NORTH CAROLINA","NORTH DAKOTA","NEBRASKA",
+               "NEW HAMPSHIRE","NEW JERSEY","NEW MEXICO","NEVADA","NEW YORK", "OHIO","OKLAHOMA","OREGON","PENNSYLVANIA","PUERTO RICO",
+               "PALAU","RHODE ISLAND","SOUTH CAROLINA","SOUTH DAKOTA","TENNESSEE","TEXAS","UTAH","VIRGINIA","VIRGIN ISLANDS","VERMONT",
+               "WASHINGTON","WISCONSIN","WEST VIRGINIA","WYOMING"]
+
+STATUS_H1B = ['CERTIFIED-WITHDRAWN', 'CERTIFIED', 'DENIED', 'WITHDRAWN', 'REJECTED']
+STATUS_PWD = ['DETERMINATION ISSUED', 'REDETERMINATION REVIEW - AFFIRMED',
+       'REDETERMINATION REVIEW-OVERTURNED - MODIFIED',
+       'CENTER DIRECTOR REVIEW - MODIFIED DETERMINATION',
+       'CENTER DIRECTOR REVIEW - AFFIRMED DETERMINATION']
+STATUS_PERM = ['Certified-Expired', 'Certified', 'Denied', 'Withdrawn']
 YEARS = [2014, 2015, 2016, 2017, 2018]
 
 NUM_COLUMN_H1B = 11
@@ -28,8 +42,44 @@ COLUMNS_H1B = [
     'PW',
     'PW_UNIT']
 
+COLUMNS_PWD = [
+    'STATUS',
+    'VISA',
+    'EMPLOYER',
+    'CITY',
+    'STATE',
+    'NAICS_CODE',
+    'SOC_CODE',
+    'SOC_NAME',
+    'JOB_TITLE',
+    'EDUCATION',
+    'WAGE',
+    'WAGE_UNIT',
+    'PW',
+    'PW_UNIT']
+
+COLUMNS_PERM = [
+    'STATUS',
+    'VISA',
+    'EMPLOYER',
+    'CITY',
+    'STATE',
+    'NAICS_CODE',
+    'INDUSTRY',
+    'SOC_CODE',
+    'SOC_NAME',
+    'JOB_TITLE',
+    'WAGE',
+    'WAGE_UNIT',
+    'CITIZENSHIP']
+
 YEARS = [2014, 2015, 2016, 2017, 2018]
-COLUMNS = [
+
+# for index, row in df.iterrows():
+UNITS = ['Year', 'Month', 'Bi-Weekly', 'Week', 'Hour']
+FACTORS_UNITS = [1, 12, 27, 54, 2160]
+
+COLUMNS_YEAR_H1B = [
     # 2014
     ['STATUS',
     'VISA_CLASS',
@@ -102,6 +152,143 @@ COLUMNS = [
     'PW_UNIT_OF_PAY']
 ]
 
-# for index, row in df.iterrows():
-UNITS = ['Year', 'Month', 'Bi-Weekly', 'Week', 'Hour']
-FACTORS_UNITS = [1, 12, 27, 54, 2160]
+COLUMNS_YEAR_PWD = [
+    # 2014
+    ['CASE_STATUS',
+     'VISA_CLASS',
+     'EMPLOYER_LEGAL_BUSINESS_NAME',
+     'EMPLOYER CITY',
+     'EMPLOYER STATE',
+     'NAICS_US_CODE',
+     'PWD_SOC_CODE',
+     'PWD_SOC_TITLE',
+     'PW_JOB_TITLE',
+     'PRIMARY_EDUCATION_LEVEL',
+     'PWD_WAGE_RATE',
+     'PWD_UNIT_OF_PAY'],
+    # 2015
+    ['STATUS',
+     'VISA_CLASS',
+     'BUSINESS_NAME',
+     'EMPLOYER CITY',
+     'EMPLOYER STATE',
+     'NAIC_ID',
+     'SOC_CODE',
+     'SOC_CODE_NAME',
+     'JOB_TITLE',
+     'EDUCATION_LEVEL',
+     'PREVAIL_WAGE',
+     'PAY_RANGE_DESC'],
+    # 2016
+    ['CASE_STATUS',
+    'VISA_CLASS',
+    'BUSINESS_NAME',
+    'EMPLOYER_CITY',
+    'EMPLOYER_STATE',
+    'NAICS_CODE',
+    'PWD_SOC_CODE',
+    'PWD_SOC_TITLE',
+    'JOB_TITLE',
+    'PRIMARY_EDUCATION_LEVEL',
+    'PWD_WAGE_RATE',
+    'PWD_UNIT_OF_PAY'],
+    # 2017
+    ['CASE_STATUS',
+     'VISA_CLASS',
+     'BUSINESS_NAME',
+     'EMPLOYER_CITY',
+     'EMPLOYER_STATE',
+     'NAICS_CODE',
+     'PWD_SOC_CODE',
+     'PWD_SOC_TITLE',
+     'JOB_TITLE',
+     'PRIMARY_EDUCATION_LEVEL',
+     'PWD_WAGE_RATE',
+     'PWD_UNIT_OF_PAY'],
+    # 2018
+    ['CASE_STATUS',
+     'VISA_CLASS',
+     'BUSINESS_NAME',
+     'EMPLOYER _CITY',
+     'EMPLOYER _STATE',
+     'NAICS_CODE',
+     'PWD_SOC_CODE',
+     'PWD_SOC_TITLE',
+     'JOB_TITLE',
+     'PRIMARY_EDUCATION_LEVEL',
+     'PWD_WAGE_RATE',
+     'PWD_UNIT_OF_PAY']
+]
+
+COLUMNS_YEAR_PERM = [
+    # 2014
+    ['Case_Status',
+     'Class_of_Admission',
+     'Employer_Name',
+     'Employer_City',
+     'Employer_State',
+     '2007_NAICS_US_CODE',
+     '2007_NAICS_US_TITLE',
+     'PW_SOC_Code',
+     'PW_SOC_TITLE',
+     'PW_Job_Title_9089',
+     'WAGE_OFFERED_FROM_9089',
+     'WAGE_OFFERED_UNIT_OF_PAY_9089',
+     'Country_of_Citizenship'],
+    # 2015
+    ['CASE_STATUS',
+     'CLASS_OF_ADMISSION',
+     'EMPLOYER_NAME',
+     'EMPLOYER_CITY',
+     'EMPLOYER_STATE',
+     'NAICS_US_CODE',
+     'NAICS_US_TITLE',
+     'PW_SOC_CODE',
+     'PW_SOC_TITLE',
+     'PW_Job_Title_9089',
+     'WAGE_OFFER_FROM_9089',
+     'WAGE_OFFER_UNIT_OF_PAY_9089',
+     'COUNTRY_OF_CITIZENSHIP'],
+    # 2016
+    ['CASE_STATUS',
+     'CLASS_OF_ADMISSION',
+     'EMPLOYER_NAME',
+     'EMPLOYER_CITY',
+     'EMPLOYER_STATE',
+     'NAICS_US_CODE',
+     'NAICS_US_TITLE',
+     'PW_SOC_CODE',
+     'PW_SOC_TITLE',
+     'JOB_INFO_JOB_TITLE',
+     'WAGE_OFFER_FROM_9089',
+     'WAGE_OFFER_UNIT_OF_PAY_9089',
+     'COUNTRY_OF_CITIZENSHIP'],
+    # 2017
+    ['CASE_STATUS',
+     'CLASS_OF_ADMISSION',
+     'EMPLOYER_NAME',
+     'EMPLOYER_CITY',
+     'EMPLOYER_STATE',
+     'NAICS_US_CODE',
+     'NAICS_US_TITLE',
+     'PW_SOC_CODE',
+     'PW_SOC_TITLE',
+     'JOB_INFO_JOB_TITLE',
+     'WAGE_OFFER_FROM_9089',
+     'WAGE_OFFER_UNIT_OF_PAY_9089',
+     'COUNTRY_OF_CITIZENSHIP'],
+    # 2018
+    ['CASE_STATUS',
+     'CLASS_OF_ADMISSION',
+     'EMPLOYER_NAME',
+     'EMPLOYER_CITY',
+     'EMPLOYER_STATE',
+     'NAICS_US_CODE',
+     'NAICS_US_TITLE',
+     'PW_SOC_CODE',
+     'PW_SOC_TITLE',
+     'JOB_INFO_JOB_TITLE',
+     'WAGE_OFFER_FROM_9089',
+     'WAGE_OFFER_UNIT_OF_PAY_9089',
+     'COUNTRY_OF_CITIZENSHIP']
+]
