@@ -70,12 +70,29 @@ def gridmap():
 
 @app.route("/heatmap", methods = ['POST', 'GET'])
 def heatmap():
-    #global dataH1B
     data = dataH1B.corr()
-    chart_data = data.to_dict(orient='records')
+
+    dataHeatmap = pd.DataFrame(columns=['x', 'y', 'value'])
+
+    index = 0
+    for x, values in data.iteritems():
+        for y, value in values.iteritems():
+            dataHeatmap.loc[index] = [x, y, value]
+            index = index + 1
+
+    chart_data = dataHeatmap.to_dict(orient='records')
     chart_data = json.dumps(chart_data, indent=2)
     data = {'chart_data': chart_data}
     return render_template('heatmap.html', data=data)
+
+@app.route("/barchart", methods = ['POST', 'GET'])
+def barchart():
+    data = dataH1B.groupby(['STATE']).size().to_frame("y")
+    data["x"] = data.index
+    chart_data = data.to_dict(orient='records')
+    chart_data = json.dumps(chart_data, indent=2)
+    data = {'chart_data': chart_data}
+    return render_template('barchart.html', data=data)
 
 @app.route("/test", methods = ['POST', 'GET'])
 def test():

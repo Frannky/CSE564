@@ -359,44 +359,6 @@ body {background-color: #2a2b3d}
   padding: 15px;
 }
 
-body {
-  font-size: 1.3rem;
-  font-family: 'Roboto', sans-serif;
-  font-weight: 400;
-  line-height: 1.5;
-}
-.map_container {
-  max-width: 600px;
-  display: block;
-  margin: 0 auto;
-}
-.toolTip {
-  position: absolute;
-  max-width: 200px;
-  padding: 7px 9px;
-  background: #fff;
-  border: 1px solid #ccc;
-  text-align: left;
-  font-size: 0.7em;
-  box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
-  -moz-box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
-  -webkit-box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
-  z-index: 9999;
-  display: none;
-}
-text{
-  fill: #292b2c;
-}
-
-
-
-
-
-
-
-
-
-
 
 .main-color {
   color: #ffc107
@@ -406,8 +368,6 @@ text{
 .success {background-color: #5cb85c}
 .inf {background-color: #5bc0de}
 
-
-/* كمية الإمبورتات دى علشان البوتستراب تبطل غتاته وتسيب العناصر اللى متعدله فى حالها طبعا الكلام ده فى كود بن بس */
 
 /* Start bootstrap */
 .navbar-right .dropdown-menu {
@@ -502,6 +462,13 @@ text{
   .navbar-default .navbar-toggle:focus, .navbar-default .navbar-toggle:hover {background-color: transparent !important}
 }
 
+
+body {
+  font-size: 1.3rem;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  line-height: 1.5;
+}
 .map_container {
   max-width: 600px;
   display: block;

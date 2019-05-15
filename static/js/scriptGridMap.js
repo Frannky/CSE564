@@ -1,25 +1,22 @@
-//Define both the dimensions of individual rectanlges and svg container for rectangles
 var rectMap_dimensions = {
-    rectWidth: 70,
-    rectHeight: 70,
-    Width: 820,
-    Height: 800
+    rectWidth: grid_width,
+    rectHeight: grid_height,
+    Width: width_gridmap,
+    Height: height_gridmap
 };
 
-//append div container for tooltip
 var tooltip = d3
-    .select("gridmap")
+    .select("#gridmap")
     .append("div")
     .attr("class", "toolTip");
 
-// Define color scale
 var rectMap_color = d3
     .scaleLinear()
     .domain([0, 3.75, 7.5, 11.25, 15])
-    .range(["#efefef", "#ff8c00"]);
+    .range(rangeRed);
 
 var rectMap_svg = d3.select("svg"),
-    rectMap_margin = CT_MARGIN,
+    rectMap_margin = margin,
     rectMap_width = +rectMap_svg.attr("width") - rectMap_margin.left - rectMap_margin.right,
     rectMap_height = +rectMap_svg.attr("height") - rectMap_margin.top - rectMap_margin.bottom;
 
@@ -126,7 +123,7 @@ legendtri
     .attr("d", "M 0,0, L 30,0, L 15,20 Z")
     .attr("transform", function (d, i) {
         return "translate(" + (rectMap_dimensions.Width / 2 - 15) + "," + 690 + ")";
-    }); // path commands
+    });
 
 legendtri
     .append("text")
@@ -137,4 +134,5 @@ legendtri
     })
     .attr("dy", ".45em")
     .style("text-anchor", "middle")
+    .style("fill", "white")
     .text("national average");
