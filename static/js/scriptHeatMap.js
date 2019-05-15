@@ -1,13 +1,14 @@
 var width = width_heatmap - margin.left - margin.right,
     height = height_heatmap - margin.top - margin.bottom;
 
-var color_heatmap = d3.scaleLinear()
-    .range(rangeRed)
-    .domain([1, 100])
-
 function drawHeatmap(data, div) {
     // var xAxisName = data.shift().group;
     // var yAxisName = xAxisName;
+
+    var tooltip = d3
+    .select(div)
+    .append("div")
+    .attr("class", "toolTip");
 
     var xAxisName = ['STATUS', 'STATE', 'TOTAL', 'WAGE', 'PW', 'YEAR', 'OCCUPATION']
     var yAxisName = xAxisName;
@@ -21,8 +22,7 @@ function drawHeatmap(data, div) {
         .domain(yAxisName)
         .padding(padding_heatmap);
 
-    var svg = d3.select(div)
-        .append("svg")
+    var svg = d3.select("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
@@ -35,10 +35,14 @@ function drawHeatmap(data, div) {
     svg.append("g")
         .call(d3.axisLeft(y));
 
-    drawDataHeatmap(data, svg)
+    var color = d3.scaleLinear()
+    .range(rangeRed)
+    .domain([-1, 1])
+
+    drawDataHeatmap(data, svg, x, y, color)
 }
 
-function drawDataHeatmap(data, svg) {
+function drawDataHeatmap(data, svg, x, y, color) {
     svg.selectAll()
         .data(data, function (d) {
             return d.x + ':' + d.y;
@@ -54,6 +58,6 @@ function drawDataHeatmap(data, svg) {
         .attr("width", x.bandwidth())
         .attr("height", y.bandwidth())
         .style("fill", function (d) {
-            return myColor(d.value)
+            return color(d.value)
         })
 }
