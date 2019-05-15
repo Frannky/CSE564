@@ -1,7 +1,7 @@
-var width = width_heatmap - margin.left - margin.right,
-    height = height_heatmap - margin.top - margin.bottom;
-
-function drawHeatmap(data, div) {
+// TODO: range of color should be changed
+function drawHeatmap(data, div, myWidth, myHeight, myMargin) {
+    var width = myWidth - myMargin.left - myMargin.right,
+    height = myHeight - myMargin.top - myMargin.bottom;
     var xAxisName = ['STATUS', 'STATE', 'TOTAL', 'WAGE', 'PW', 'YEAR', 'OCCUPATION']
     var yAxisName = xAxisName;
 
