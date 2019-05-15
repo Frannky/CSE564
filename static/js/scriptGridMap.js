@@ -109,7 +109,8 @@ legend.append("text")
     })
     .text(function (d) {
         return d + '%';
-    });
+    })
+    .style("fill", "#BBB");
 
 var legendtri = rectMap_svg
     .append("svg")
@@ -134,5 +135,5 @@ legendtri
     })
     .attr("dy", ".45em")
     .style("text-anchor", "middle")
-    .style("fill", "white")
+    .style("fill", "#BBB")
     .text("national average");
