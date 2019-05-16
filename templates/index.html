@@ -27,21 +27,22 @@
                     <li><a href="{{ url_for('test') }}">Test</a></li>
                     <li><a href="{{ url_for('index') }}">Overview</a></li>
                     <li><a href="{{ url_for('gridmap') }}">Grid Map</a></li>
-                    <li><a href="{{ url_for('heatmap') }}">Heat Map</a></li>
+                    <li><a href="{{ url_for('heatmap', data_id=0) }}">Correlation</a></li>
                     <li><a href="{{ url_for('barchart') }}">Bar Chart</a></li>
-
+                    <li><a href="{{ url_for('piechart', data_id=0) }}">Pie Chart</a></li>
                     <li><a href="#" onclick="updateP('EmployerPeitionRank')">Top Petitions</a></li>
-                    <li><a href="#">2015</a></li>
-                    <li><a href="#">2016</a></li>
-                    <li><a href="#">2017</a></li>
-                    <li><a href="#">2018</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#"> PWD data</a>
+                <ul class="side-nav-dropdown">
+                    <li><a href="{{ url_for('heatmap', data_id=1) }}">Correlation</a></li>
                 </ul>
             </li>
             <li>
                 <a href="#"> PERM data</a>
                 <ul class="side-nav-dropdown">
-                    <li><a href="#">1</a></li>
-                    <li><a href="#">2</a></li>
+                    <li><a href="{{ url_for('heatmap', data_id=2) }}">Correlation</a></li>
                 </ul>
             </li>
         </ul>

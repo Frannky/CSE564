@@ -25,18 +25,24 @@
                 <i class="fal fa-calendar-alt" aria-hidden="true"></i>
                 <a href="#"> H1B</a>
                 <ul class="side-nav-dropdown">
+                    <li><a href="{{ url_for('test') }}">Test</a></li>
                     <li><a href="{{ url_for('index') }}">Overview</a></li>
-                    <li><a href="#">2015</a></li>
-                    <li><a href="#">2016</a></li>
-                    <li><a href="#">2017</a></li>
-                    <li><a href="#">2018</a></li>
+                    <li><a href="{{ url_for('gridmap') }}">Grid Map</a></li>
+                    <li><a href="{{ url_for('heatmap', data_id=0) }}">Correlation</a></li>
+                    <li><a href="{{ url_for('barchart') }}">Bar Chart</a></li>
+                    <li><a href="#" onclick="updateP('EmployerPeitionRank')">Top Petitions</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#"> PWD data</a>
+                <ul class="side-nav-dropdown">
+                    <li><a href="{{ url_for('heatmap', data_id=1) }}">Correlation</a></li>
                 </ul>
             </li>
             <li>
                 <a href="#"> PERM data</a>
                 <ul class="side-nav-dropdown">
-                    <li><a href="#">1</a></li>
-                    <li><a href="#">2</a></li>
+                    <li><a href="{{ url_for('heatmap', data_id=2) }}">Correlation</a></li>
                 </ul>
             </li>
         </ul>
@@ -72,6 +78,8 @@
         const DURATION = 750;
 
         var data = {{data.chart_data | safe}};
+        var groupData = {{ data.group_data | safe }};
+
         console.log(data);
 
         function updateData(plotname) {
@@ -82,7 +90,7 @@
             })
         }
 
-        drawHeatmap(data, "#heatmap", width_heatmap, height_heatmap, margin)
+        drawHeatmap(data, groupData, "#heatmap", width_heatmap, height_heatmap, margin)
     </script>
 </body>
 </html>

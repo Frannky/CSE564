@@ -1,8 +1,9 @@
 // TODO: range of color should be changed
-function drawHeatmap(data, div, myWidth, myHeight, myMargin) {
+function drawHeatmap(data, groupData, div, myWidth, myHeight, myMargin) {
     var width = myWidth - myMargin.left - myMargin.right,
     height = myHeight - myMargin.top - myMargin.bottom;
-    var xAxisName = ['STATUS', 'STATE', 'TOTAL', 'WAGE', 'PW', 'YEAR', 'OCCUPATION']
+    //var xAxisName = ['STATUS', 'STATE', 'TOTAL', 'WAGE', 'PW', 'YEAR', 'OCCUPATION']
+    var xAxisName = groupData;
     var yAxisName = xAxisName;
 
     var x = d3.scaleBand()

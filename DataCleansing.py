@@ -121,28 +121,6 @@ def getDataH1b():
     dfH1B = pd.concat(dfs)
     dfH1B.to_csv(ct.PATH_H1B + "merged" + ct.EXT_TO, index=False)
 
-def numeric(filepath, statuses):
-    df = pd.read_csv(filepath + "merged" + ct.EXT_TO, low_memory=False)
-
-    # Numeric occupation
-    droplistOccupation = getDroplistOccupation(df.SOC_CODE)
-    print(droplistOccupation)
-    df = df[~df['SOC_CODE'].isin(droplistOccupation)]
-    df['OCCUPATION'] = df.apply(lambda row: getOccupation(row), axis=1)
-    df['OCCUPATION'] = df['OCCUPATION'].astype(int)
-
-    # Numeric state
-    print(df[~(df['STATE'].isin(ct.STATES + ct.STATES_FULL))].STATE)
-    df = df[df['STATE'].isin(ct.STATES + ct.STATES_FULL)]
-    mapState = getMap2(ct.STATES, ct.STATES_FULL)
-    df = df.replace({'STATE': mapState})
-
-    # Numberic status
-    mapStatus = getMap1(statuses)
-    df = df.replace({'STATUS': mapStatus})
-
-    df.to_csv(filepath + "numeric" + ct.EXT_TO, index=False)
-
 def PWD(i):
     df = pd.read_excel(ct.PATH_PWD + str(ct.YEARS[i]) + ct.EXT_ORI, index_col=None)
     df = df[ct.COLUMNS_YEAR_PWD[i]]
@@ -248,11 +226,41 @@ def getDataPERM():
     dfPERM = pd.concat(dfs)
     dfPERM.to_csv(ct.PATH_PERM + "merged" + ct.EXT_TO, index=False)
 
-#getDataPWD()
-#numeric(ct.PATH_PWD, ct.STATUS_PWD)
+def numeric(filepath, statuses):
+    df = pd.read_csv(filepath + "merged" + ct.EXT_TO, low_memory=False)
+
+    # Numeric occupation
+    droplistOccupation = getDroplistOccupation(df.SOC_CODE)
+    print(droplistOccupation)
+    df = df[~df['SOC_CODE'].isin(droplistOccupation)]
+    df['OCCUPATION'] = df.apply(lambda row: getOccupation(row), axis=1)
+    df['OCCUPATION'] = df['OCCUPATION'].astype(int)
+
+    # Numeric state
+    print(df[~(df['STATE'].isin(ct.STATES + ct.STATES_FULL))].STATE)
+    df = df[df['STATE'].isin(ct.STATES + ct.STATES_FULL)]
+    mapState = getMap2(ct.STATES, ct.STATES_FULL)
+    df = df.replace({'STATE': mapState})
+
+    # Numberic status
+    mapStatus = getMap1(statuses)
+    df = df.replace({'STATUS': mapStatus})
+
+    df.to_csv(filepath + "numeric" + ct.EXT_TO, index=False)
+
+def numericEducation(filepath):
+    df = pd.read_csv(filepath + "numeric" + ct.EXT_TO, low_memory=False)
+
+    # Numeric education
+    mapEducation = getMap1(ct.EDUCATION)
+    df = df.replace({'EDUCATION': mapEducation})
+
+    df.to_csv(filepath + "numeric" + ct.EXT_TO, index=False)
+# getDataPWD()
+# numeric(ct.PATH_PWD, ct.STATUS_PWD)
+#numericEducation(ct.PATH_PWD)
 
 #getDataPERM()
 #numeric(ct.PATH_PERM, ct.STATUS_PERM)
 
-#TODO numeric PWD's education
-#TODO numeric PERM's citizenship
+#TODO numeric PERM's citizenship: probably not, too many countries

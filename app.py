@@ -23,6 +23,8 @@ app = Flask(__name__)
 def index():
     #df = pd.read_csv('data.csv').drop('Open', axis=1)
     global dataH1B
+    global dataPWD
+    global dataPERM
     global dataEmployerPartition
 
     data = dataH1B
@@ -35,7 +37,7 @@ def index():
         elif request.form['data'] == 'covMatrix':
             data = data.cov()
         elif request.form['data'] == 'EmployerPeitionRank':
-            nEmployerPartition= 10
+            nEmployerPartition= 3
             data = getEmployerPartitionForYear(dataEmployerPartition, nEmployerPartition)
         else:
             print("wrong data request")
@@ -68,9 +70,14 @@ def gridmap():
     data = {'chart_data': chart_data}
     return render_template('gridmap.html', data=data)
 
-@app.route("/heatmap", methods = ['POST', 'GET'])
-def heatmap():
-    data = dataH1B.corr()
+@app.route("/heatmap/<int:data_id>", methods = ['POST', 'GET'])
+def heatmap(data_id):
+    if data_id == 0:
+        data = dataH1B.corr()
+    elif data_id == 1:
+        data = dataPWD.corr()
+    elif data_id == 2:
+        data = dataPERM.corr()
 
     dataHeatmap = pd.DataFrame(columns=['x', 'y', 'value'])
 
@@ -82,7 +89,11 @@ def heatmap():
 
     chart_data = dataHeatmap.to_dict(orient='records')
     chart_data = json.dumps(chart_data, indent=2)
+    group_data = json.dumps(data.columns.tolist(), indent=2)
+
     data = {'chart_data': chart_data}
+    data['group_data'] = group_data
+
     return render_template('heatmap.html', data=data)
 
 @app.route("/barchart", methods = ['POST', 'GET'])
@@ -94,6 +105,24 @@ def barchart():
     data = {'chart_data': chart_data}
     return render_template('barchart.html', data=data)
 
+@app.route("/piechart/<int:data_id>", methods = ['POST', 'GET'])
+def piechart(data_id):
+    if data_id == 0:
+        data = dataPWD.groupby(['EDUCATION']).size().to_frame("y")
+        data["x"] = data.index
+    elif data_id == 1:
+        values = dataPWD.groupby('EDUCATION').YEAR.apply(pd.value_counts)
+        dataPetition = pd.DataFrame(columns=['education', 'year', 'value'])
+        index = 0
+        for x, value in values.iteritems():
+            dataPetition.loc[index] = [x[0], x[1], value]
+            index = index + 1
+
+    chart_data = data.to_dict(orient='records')
+    chart_data = json.dumps(chart_data, indent=2)
+    data = {'chart_data': chart_data}
+    return render_template('test.html', data=data)
+
 @app.route("/test", methods = ['POST', 'GET'])
 def test():
     chart_data = {'x': [1, 2], 'y': [3, 4]}
@@ -101,6 +130,8 @@ def test():
     chart_data = json.dumps(chart_data, indent=2)
     data = {'chart_data': chart_data}
     return render_template('test.html', data=data)
+
+
 
 # def getScatterMDS(data):
 #     dataframe = applyMDS(data, 2)
@@ -188,5 +219,7 @@ def getEmployerPartitionForYear(data, num):
 
 if __name__ == "app":
     dataH1B = pd.read_csv(ct.PATH_H1B + "numeric" + ct.EXT_TO, low_memory=False)
+    dataPWD = pd.read_csv(ct.PATH_PWD + "numeric" + ct.EXT_TO, low_memory=False)
+    dataPERM = pd.read_csv(ct.PATH_PERM + "numeric" + ct.EXT_TO, low_memory=False)
     dataEmployerPartition = getEmployerPartition(dataH1B)
     app.run(debug=True)

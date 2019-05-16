@@ -23,6 +23,9 @@ STATUS_PWD = ['DETERMINATION ISSUED', 'REDETERMINATION REVIEW - AFFIRMED',
        'CENTER DIRECTOR REVIEW - MODIFIED DETERMINATION',
        'CENTER DIRECTOR REVIEW - AFFIRMED DETERMINATION']
 STATUS_PERM = ['Certified-Expired', 'Certified', 'Denied', 'Withdrawn']
+EDUCATION = ['Doctorate (PhD)', "Master's", "Bachelor's", "Associate's", 'High School/GED',
+             'Other Degree (JD, MD, etc.)', 'None']
+
 YEARS = [2014, 2015, 2016, 2017, 2018]
 
 NUM_COLUMN_H1B = 11
