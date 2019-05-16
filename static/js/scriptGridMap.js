@@ -1,138 +1,142 @@
-var rectMap_dimensions = {
-    rectWidth: grid_width,
-    rectHeight: grid_height,
-    Width: width_gridmap,
-    Height: height_gridmap
-};
+function drawGridMap(data, div, myWidth, myHeight, myGridWidth, myGridHeight, myMargin) {
+    var svgMap = d3.select("svg");
 
-var tooltip = d3
-    .select("#gridmap")
-    .append("div")
-    .attr("class", "toolTip");
+    var width = svgMap.attr("Width") - myMargin.left - myMargin.right,
+        height = svgMap.attr("Height") - myMargin.top - myMargin.bottom;
 
-var rectMap_color = d3
+    var xLegend = myWidth / 4,
+        yLegend = 700,
+        widthLegend = 80,
+        heightLegend = 20;
+
+    var color = d3
     .scaleLinear()
     .domain([0, 3.75, 7.5, 11.25, 15])
     .range(rangeRed);
 
-var rectMap_svg = d3.select("svg"),
-    rectMap_margin = margin,
-    rectMap_width = +rectMap_svg.attr("width") - rectMap_margin.left - rectMap_margin.right,
-    rectMap_height = +rectMap_svg.attr("height") - rectMap_margin.top - rectMap_margin.bottom;
+    var legend = svgMap
+        .selectAll(".legend")
+        .data(color.domain())
+        .enter()
+        .append("g")
+        .attr("class", "legend")
+        .attr("transform", function (d, i) {
+            return "translate(" + i * 80 + ",0)";
+        });
 
-var sEnter = rectMap_svg
-    .append("g")
-    .selectAll("g")
-    .data(gridmapLayoutUsa)
-    .enter()
-    .append("g")
-    .attr("id", function (d) {
-        return d.key;
-    })
-    .attr("transform", function (d) {
-        return (
-            "translate(" +
-            d.x * rectMap_dimensions.rectWidth +
-            "," +
-            d.y * rectMap_dimensions.rectHeight +
-            ")"
-        );
-    });
+    legend
+        .append("rect")
+        .attr("x", xLegend)
+        .attr("y", yLegend)
+        .attr("width", widthLegend)
+        .attr("height", heightLegend)
+        .style("fill", color);
 
-sEnter
-    .append("rect")
-    .attr("width", rectMap_dimensions.rectWidth / 1.00)
-    .attr("height", rectMap_dimensions.rectHeight / 1.00)
-    .style("opacity", 1)
-    .style("fill", function (d) {
-        return rectMap_color(d.sus);
-    })
-    .style("stroke", "#1e1e1e")
+    legend
+        .append("text")
+        .attr("x", xLegend)
+        .attr("y", yLegend + 40)
+        .attr("dy", ".45em")
+        .style("text-anchor", "start")
+        .attr("transform", function (d, i) {
+            return "translate(" + i * 13 + ",0)";
+        })
+        .text(function (d) {
+            return d + '%';
+        })
+        .style("fill", "#BBB");
 
-    .on("mousemove", function (d) {
-        var w = window.innerWidth;
-        var h = window.innerHeight;
-        tooltip
-            .style("display", "inline-block")
-            .html("Test" + "<br>" + "£" + "test");
-        if (d3.event.pageX < w / 2) {
-            tooltip.style("left", d3.event.pageX + 20 + "px");
-        } else {
-            tooltip.style("left", d3.event.pageX - 80 + "px");
-        }
-        if (d3.event.pageY < h / 3) {
-            tooltip.style("top", d3.event.pageY + 20 + "px");
-        } else {
-            tooltip.style("top", d3.event.pageY - 70 + "px");
-        }
-    })
+    var legendtri = svgMap
+        .append("svg")
+        .attr("width", myWidth)
+        .attr("height", myHeight);
 
-    .on("mouseout", function (d) {
-        tooltip.style("display", "none");
-    });
+    legendtri
+        .append("path")
+        .style("stroke", "none")
+        .style("fill", "#1e1e1e")
+        .attr("d", "M 0,0, L 30,0, L 15,20 Z")
+        .attr("transform", function (d, i) {
+            return "translate(" + (myWidth.Width / 2 - 15) + "," + 690 + ")";
+        });
 
-sEnter
-    .append("text")
-    .attr("x", rectMap_dimensions.rectWidth / 2)
-    .attr("y", rectMap_dimensions.rectHeight / 1.75)
-    .style("text-anchor", "middle")
-    .style("pointer-events", "none")
-    .text(function (d) {
-        return d.key;
-    });
+    legendtri
+        .append("text")
+        .attr("x", 0)
+        .attr("y", myHeight - 130)
+        .attr("transform", function (d, i) {
+            return "translate(" + myWidth / 2 + "," + 0 + ")";
+        })
+        .attr("dy", ".45em")
+        .style("text-anchor", "middle")
+        .style("fill", "#BBB")
+        .text("national average");
 
-var legend = rectMap_svg
-    .selectAll(".legend")
-    .data(rectMap_color.domain())
-    .enter()
-    .append("g")
-    .attr("class", "legend")
-    .attr("transform", function (d, i) {
-        return "translate(" + i * 80 + ",0)";
-    });
+    drawDataGridmap(data, svgMap, myGridWidth, myGridHeight, color);
+}
 
-legend
-    .append("rect")
-    .attr("x", rectMap_dimensions.Width / 4)
-    .attr("y", 700)
-    .attr("width", 80)
-    .attr("height", 20)
-    .style("fill", rectMap_color);
+function drawDataGridmap(data, svg, myGridWidth, myGridHeight, color) {
+    var tooltip = d3
+        .select(div)
+        .append("div")
+        .attr("class", "toolTip");
+    var svgRect = svg
+        .append("g")
+        .selectAll("g")
+        .data(data)
+        .enter()
+        .append("g")
+        .attr("id", function (d) {
+            return d.key;
+        })
+        .attr("transform", function (d) {
+            return (
+                "translate(" +
+                d.x * myGridWidth +
+                "," +
+                d.y * myGridHeight +
+                ")"
+            );
+        });
 
-legend.append("text")
-    .attr("x", rectMap_dimensions.Width / 4)
-    .attr("y", 740)
-    .attr("dy", ".45em")
-    .style("text-anchor", "start")
-    .attr("transform", function (d, i) {
-        return "translate(" + i * 13 + ",0)";
-    })
-    .text(function (d) {
-        return d + '%';
-    });
+    svgRect
+        .append("rect")
+        .attr("width", myGridWidth / 1.00)
+        .attr("height", myGridHeight / 1.00)
+        .style("opacity", 1)
+        .style("fill", function (d) {
+            return color(d.sus);
+        })
+        .style("stroke", "#1e1e1e")
+        .on("mousemove", function (d) {
+            var w = window.innerWidth;
+            var h = window.innerHeight;
+            tooltip
+                .style("display", "inline-block")
+                .html("Test:" + "<br>" + "£" + "test");
+            if (d3.event.pageX < w / 2) {
+                tooltip.style("left", d3.event.pageX + 20 + "px");
+            } else {
+                tooltip.style("left", d3.event.pageX - 80 + "px");
+            }
+            if (d3.event.pageY < h / 3) {
+                tooltip.style("top", d3.event.pageY + 20 + "px");
+            } else {
+                tooltip.style("top", d3.event.pageY - 70 + "px");
+            }
+        })
 
-var legendtri = rectMap_svg
-    .append("svg")
-    .attr("width", rectMap_dimensions.Width)
-    .attr("height", rectMap_dimensions.Height);
+        .on("mouseout", function (d) {
+            tooltip.style("display", "none");
+        });
 
-legendtri
-    .append("path") // attach a path
-    .style("stroke", "none") // colour the line
-    .style("fill", "#1e1e1e") // remove any fill colour
-    .attr("d", "M 0,0, L 30,0, L 15,20 Z")
-    .attr("transform", function (d, i) {
-        return "translate(" + (rectMap_dimensions.Width / 2 - 15) + "," + 690 + ")";
-    });
-
-legendtri
-    .append("text")
-    .attr("x", 0)
-    .attr("y", rectMap_dimensions.Height - 130)
-    .attr("transform", function (d, i) {
-        return "translate(" + rectMap_dimensions.Width / 2 + "," + 0 + ")";
-    })
-    .attr("dy", ".45em")
-    .style("text-anchor", "middle")
-    .style("fill", "white")
-    .text("national average");
+    svgRect
+        .append("text")
+        .attr("x", myGridWidth / 2)
+        .attr("y", myGridHeight / 1.75)
+        .style("text-anchor", "middle")
+        .style("pointer-events", "none")
+        .text(function (d) {
+            return d.key;
+        });
+}

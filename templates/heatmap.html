@@ -25,62 +25,39 @@
                 <i class="fal fa-calendar-alt" aria-hidden="true"></i>
                 <a href="#"> H1B</a>
                 <ul class="side-nav-dropdown">
+                    <li><a href="{{ url_for('test') }}">Test</a></li>
                     <li><a href="{{ url_for('index') }}">Overview</a></li>
-                    <li><a href="#">2015</a></li>
-                    <li><a href="#">2016</a></li>
-                    <li><a href="#">2017</a></li>
-                    <li><a href="#">2018</a></li>
+                    <li><a href="{{ url_for('gridmap') }}">Grid Map</a></li>
+                    <li><a href="{{ url_for('heatmap', data_id=0) }}">Correlation</a></li>
+                    <li><a href="{{ url_for('barchart') }}">Bar Chart</a></li>
+                    <li><a href="#" onclick="updateP('EmployerPeitionRank')">Top Petitions</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#"> PWD data</a>
+                <ul class="side-nav-dropdown">
+                    <li><a href="{{ url_for('heatmap', data_id=1) }}">Correlation</a></li>
                 </ul>
             </li>
             <li>
                 <a href="#"> PERM data</a>
                 <ul class="side-nav-dropdown">
-                    <li><a href="#">1</a></li>
-                    <li><a href="#">2</a></li>
+                    <li><a href="{{ url_for('heatmap', data_id=2) }}">Correlation</a></li>
                 </ul>
             </li>
         </ul>
     </aside>
 
     <section id="contents">
-        <nav class="navbar navbar-default">
-            <div class="container-fluid">
-                <div class="collapse navbar-collapse navbar-left" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav">
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                               aria-haspopup="true" aria-expanded="false">Year <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">2014</a></li>
-                                <li><a href="#">2015</a></li>
-                                <li><a href="#">2016</a></li>
-                                <li><a href="#">2017</a></li>
-                                <li><a href="#">2018</a></li>
-                            </ul>
-                        </li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                               aria-haspopup="true" aria-expanded="false">Type <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Number of Applications</a></li>
-                                <li><a href="#">Average Salary</a></li>
-                                <li><a href="#">Top Occupations</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
         <section class="statistics">
             <div class="container-fluid">
                 <div class="box" id="heatmap">
                     <div class="map_container"> <!-- style of container defined by you-->
-                        <svg viewBox="0 0 820 800" preserveAspectRatio="xMinYMin slice" width="100%" height="100%" style="width: 100%; overflow: hidden;"></svg>
+                        <svg viewBox="0 0 800 800" preserveAspectRatio="xMinYMin slice" width="100%" height="100%" style="width: 100%; overflow: hidden;"></svg>
                     </div>
                 </div>
             </div>
         </section>
-
     </section>
 
     <!-- load the d3.js library -->
@@ -101,6 +78,8 @@
         const DURATION = 750;
 
         var data = {{data.chart_data | safe}};
+        var groupData = {{ data.group_data | safe }};
+
         console.log(data);
 
         function updateData(plotname) {
@@ -111,7 +90,7 @@
             })
         }
 
-        drawHeatmap(data, "#heatmap")
+        drawHeatmap(data, groupData, "#heatmap", width_heatmap, height_heatmap, margin)
     </script>
 </body>
 </html>

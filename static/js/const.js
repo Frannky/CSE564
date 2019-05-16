@@ -8,8 +8,8 @@ var margin = {
 var grid_width = 70,
     grid_height = 70;
 
-var width_heatmap = 450,
-    height_heatmap = 450,
+var width_heatmap = 750,
+    height_heatmap = 750,
     width_scatterPlot = 600,
     height_scatterplot = 270,
     width_gridmap = 820,
