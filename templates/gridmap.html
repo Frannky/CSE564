@@ -26,17 +26,6 @@
                 <a href="#"> H1B</a>
                 <ul class="side-nav-dropdown">
                     <li><a href="{{ url_for('index') }}">Overview</a></li>
-                    <li><a href="#">2015</a></li>
-                    <li><a href="#">2016</a></li>
-                    <li><a href="#">2017</a></li>
-                    <li><a href="#">2018</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="#"> PERM data</a>
-                <ul class="side-nav-dropdown">
-                    <li><a href="#">1</a></li>
-                    <li><a href="#">2</a></li>
                 </ul>
             </li>
         </ul>
@@ -100,6 +89,9 @@
         const DURATION = 750;
 
         var data = {{data.chart_data | safe}};
+        var dataname = {{data.dataname | safe}};
+        var states = {{data.states | safe }};
+        var domain = {{ data.domain | safe }}
         console.log(data);
 
         function updateData(plotname) {
@@ -111,7 +103,7 @@
             })
         }
 
-        drawGridMap(gridmapLayoutUsa, "#gridmap", width_gridmap, height_gridmap,
+        drawGridMap(data, dataname, states, domain, "#gridmap", width_gridmap, height_gridmap,
             grid_width, grid_height, margin);
     </script>
 </body>

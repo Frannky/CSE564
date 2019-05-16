@@ -26,7 +26,8 @@
                 <ul class="side-nav-dropdown">
                     <li><a href="{{ url_for('test') }}">Test</a></li>
                     <li><a href="{{ url_for('index') }}">Overview</a></li>
-                    <li><a href="{{ url_for('gridmap') }}">Grid Map</a></li>
+                    <li><a href="{{ url_for('gridmap', chartname='Mean Wage') }}">Mean Wage</a></li>
+                    <li><a href="{{ url_for('gridmap', chartname='Total Petitions') }}">Total Petitions</a></li>
                     <li><a href="{{ url_for('heatmap', data_id=0) }}">Correlation</a></li>
                     <li><a href="{{ url_for('barchart') }}">Bar Chart</a></li>
                     <li><a href="{{ url_for('piechart', data_id=0) }}">Pie Chart</a></li>
