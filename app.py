@@ -126,6 +126,7 @@ def piechart(data_id):
         for x, value in values.iteritems():
             dataPetition.loc[index] = [x[0], x[1], value]
             index = index + 1
+        data = dataPetition
 
     chart_data = data.to_dict(orient='records')
     chart_data = json.dumps(chart_data, indent=2)
