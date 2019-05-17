@@ -1,4 +1,9 @@
-function drawGridMap(data, div, myWidth, myHeight, myGridWidth, myGridHeight, myMargin) {
+function drawGridMap(data, dataname, states, domain, div, myWidth, myHeight, myGridWidth, myGridHeight, myMargin) {
+    var tooltip = d3
+        .select(div)
+        .append("div")
+        .attr("class", "toolTip");
+
     var svgMap = d3.select("svg");
 
     var width = svgMap.attr("Width") - myMargin.left - myMargin.right,
@@ -11,7 +16,7 @@ function drawGridMap(data, div, myWidth, myHeight, myGridWidth, myGridHeight, my
 
     var color = d3
     .scaleLinear()
-    .domain([0, 3.75, 7.5, 11.25, 15])
+    .domain(domain)
     .range(rangeRed);
 
     var legend = svgMap
@@ -42,7 +47,7 @@ function drawGridMap(data, div, myWidth, myHeight, myGridWidth, myGridHeight, my
             return "translate(" + i * 13 + ",0)";
         })
         .text(function (d) {
-            return d + '%';
+            return d;
         })
         .style("fill", "#BBB");
 
@@ -70,20 +75,16 @@ function drawGridMap(data, div, myWidth, myHeight, myGridWidth, myGridHeight, my
         .attr("dy", ".45em")
         .style("text-anchor", "middle")
         .style("fill", "#BBB")
-        .text("national average");
+        .text(dataname);
 
-    drawDataGridmap(data, svgMap, myGridWidth, myGridHeight, color);
+    drawDataGridmap(data, dataname, states, svgMap, myGridWidth, myGridHeight, color, tooltip);
 }
 
-function drawDataGridmap(data, svg, myGridWidth, myGridHeight, color) {
-    var tooltip = d3
-        .select(div)
-        .append("div")
-        .attr("class", "toolTip");
+function drawDataGridmap(data, dataname, states, svg, myGridWidth, myGridHeight, color, tooltip) {
     var svgRect = svg
         .append("g")
         .selectAll("g")
-        .data(data)
+        .data(gridmapLayoutUsa)
         .enter()
         .append("g")
         .attr("id", function (d) {
@@ -105,7 +106,7 @@ function drawDataGridmap(data, svg, myGridWidth, myGridHeight, color) {
         .attr("height", myGridHeight / 1.00)
         .style("opacity", 1)
         .style("fill", function (d) {
-            return color(d.sus);
+            return color(data[states.indexOf(d.key)]);
         })
         .style("stroke", "#1e1e1e")
         .on("mousemove", function (d) {
@@ -113,7 +114,7 @@ function drawDataGridmap(data, svg, myGridWidth, myGridHeight, color) {
             var h = window.innerHeight;
             tooltip
                 .style("display", "inline-block")
-                .html("Test:" + "<br>" + "£" + "test");
+                .html(dataname + ": " + "<br>" + data[states.indexOf(d.key)]);
             if (d3.event.pageX < w / 2) {
                 tooltip.style("left", d3.event.pageX + 20 + "px");
             } else {

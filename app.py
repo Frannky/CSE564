@@ -62,12 +62,21 @@ def index():
 # def index():
     ###
 
-@app.route("/gridmap", methods = ['POST', 'GET'])
-def gridmap():
-    chart_data = {'x': [1, 2], 'y': [3, 4]}
-    # chart_data = data.to_dict(orient='records')
-    chart_data = json.dumps(chart_data, indent=2)
-    data = {'chart_data': chart_data}
+@app.route("/gridmap<string:chartname>", methods = ['POST', 'GET'])
+def gridmap(chartname):
+    if chartname == "Mean Wage":
+        groups = (dataH1B.groupby('STATE').mean().WAGE).round(2)
+        data = json.dumps(groups.tolist(), indent=2)
+        dataDomain = [0, 375000, 750000, 1125000, 1500000]
+    elif chartname == "Total Petitions":
+        total = dataH1B.groupby('STATE').size()
+        data = json.dumps(total.tolist(), indent=2)
+        dataDomain = [0, 125000, 250000, 375000, 500000]
+
+    data = {'chart_data': data}
+    data['dataname'] = "'" + chartname + "'"
+    data['states'] = ct.STATES
+    data['domain'] = dataDomain
     return render_template('gridmap.html', data=data)
 
 @app.route("/heatmap/<int:data_id>", methods = ['POST', 'GET'])
@@ -117,6 +126,7 @@ def piechart(data_id):
         for x, value in values.iteritems():
             dataPetition.loc[index] = [x[0], x[1], value]
             index = index + 1
+        data = dataPetition
 
     chart_data = data.to_dict(orient='records')
     chart_data = json.dumps(chart_data, indent=2)

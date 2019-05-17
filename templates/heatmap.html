@@ -25,24 +25,7 @@
                 <i class="fal fa-calendar-alt" aria-hidden="true"></i>
                 <a href="#"> H1B</a>
                 <ul class="side-nav-dropdown">
-                    <li><a href="{{ url_for('test') }}">Test</a></li>
                     <li><a href="{{ url_for('index') }}">Overview</a></li>
-                    <li><a href="{{ url_for('gridmap') }}">Grid Map</a></li>
-                    <li><a href="{{ url_for('heatmap', data_id=0) }}">Correlation</a></li>
-                    <li><a href="{{ url_for('barchart') }}">Bar Chart</a></li>
-                    <li><a href="#" onclick="updateP('EmployerPeitionRank')">Top Petitions</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="#"> PWD data</a>
-                <ul class="side-nav-dropdown">
-                    <li><a href="{{ url_for('heatmap', data_id=1) }}">Correlation</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="#"> PERM data</a>
-                <ul class="side-nav-dropdown">
-                    <li><a href="{{ url_for('heatmap', data_id=2) }}">Correlation</a></li>
                 </ul>
             </li>
         </ul>
