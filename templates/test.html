@@ -88,16 +88,153 @@
     <script>
         const DURATION = 750;
 
-        var data = {{data.chart_data | safe}};
-        console.log(data);
+        {#var data = {{data.chart_data | safe}};#}
+        {#console.log(data);#}
+        {##}
+        {#function updateData(plotname) {#}
+        {#    $.post("", {'data': plotname}, function(data_infunc){#}
+        {#        dataNew = JSON.parse(data_infunc.chart_data)#}
+        {#        console.log(plotname);#}
+        {#        console.log(dataNew);#}
+        {#    })#}
+       // }
 
-        function updateData(plotname) {
-            $.post("", {'data': plotname}, function(data_infunc){
-                dataNew = JSON.parse(data_infunc.chart_data)
-                console.log(plotname);
-                console.log(dataNew);
-            })
-        }
+            {#        var data = [{year: "2014", "Doctorate (PhD)": 2960, "Master's": 739, "Bachelor's": 2127, "Other": 1043},#}
+            {#    {year: "2015", "Doctorate (PhD)": 2669, "Master's": 699, "Bachelor's": 1702, "Other": 933},#}
+            {#    {year: "2016", "Doctorate (PhD)": 2267, "Master's": 543, "Bachelor's": 1160, "Other": 599},#}
+            {#    {year: "2017", "Doctorate (PhD)": 2119, "Master's": 561, "Bachelor's": 1275, "Other": 543},#}
+            {#    {year: "2018", "Doctorate (PhD)": 1721, "Master's": 728, "Bachelor's": 2729, "Other": 529}#}
+            {#];#}
+
+
+var data = [
+	  {
+	    Category: "2014",
+	    "Doctorate (PhD)": 2960,
+	    "Master's": 739,
+	    "Bachelor's": 2127,
+          "Other": 1043
+	  },
+	  {
+	    Category: "2015",
+	    "Doctorate (PhD)": 2669,
+	    "Master's": 699,
+	    "Bachelor's": 1702,
+          "Other": 933
+	  },
+	  {
+	    Category: "2016",
+	    "Doctorate (PhD)": 2267,
+	    "Master's": 543,
+	    "Bachelor's": 1160,
+          "Other": 599
+	  },
+	  {
+	    Category: "2017",
+	    "Doctorate (PhD)": 2119,
+	    "Master's": 561,
+	    "Bachelor's": 1275,
+          "Other": 543
+	  },
+      {
+	    Category: "2018",
+	    "Doctorate (PhD)": 1721,
+	    "Master's": 728,
+	    "Bachelor's": 2729,
+          "Other": 529
+	  }
+	];
+
+	var w=500,h=500,padding=40;
+	var svg=d3.select('svg').append('svg')
+				.attr('width', w)
+				.attr('height', h);
+	var stack=d3.stack()
+				.keys(["Doctorate (PhD)","Master's","Bachelor's","Other"]);
+
+	var datasets=[d3.stack().keys(["Doctorate (PhD)","Master's","Bachelor's","Other"])(data)];//,d3.stack().keys(['type4'])(data)
+
+	var num_groups=datasets.length;
+
+	var xlabels=data.map(function(d){return d['Category']});
+
+	var xscale=d3.scaleBand()
+					.domain(xlabels)
+					.range([padding+10,w-padding-10])
+					.paddingInner(0.5);
+
+	var ydomain_min=d3.min(datasets.flat().map(function(row) {
+							return d3.min(row.map(function(d){return d[1];}));
+						}));
+	var ydomain_max=d3.max(datasets.flat().map(function(row) {
+							return d3.max(row.map(function(d){return d[1];}));
+						}));
+
+	var yscale=d3.scaleLinear()
+					.domain([0,ydomain_max])
+					.range([h-padding,padding]);
+
+    var accent = d3.scaleOrdinal()
+    .range(["#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+	var xaxis=d3.axisBottom(xscale);
+	var yaxis=d3.axisLeft(yscale);
+
+	d3.range(num_groups).forEach(function(gnum) {
+		svg.selectAll('g.group'+gnum)
+			.data(datasets[gnum])
+			.enter()
+			.append('g')
+				.attr('fill',accent)
+				.attr('class', 'group'+gnum)
+			.selectAll('rect')
+			.data(d=>d)
+			.enter()
+			.append('rect')
+				.attr('x',(d,i)=>xscale(xlabels[i])+(xscale.bandwidth()/num_groups)*gnum)
+				.attr('y',d=>yscale(d[1]))
+				.attr('width',xscale.bandwidth()/num_groups)
+				.attr('height',d=>yscale(d[0])-yscale(d[1]));
+			});
+
+	svg.append('g')
+			.attr('class','axis x')
+			.attr('transform','translate(0,'+(h-padding)+")")
+		.call(xaxis)
+      .style("stroke", "#BBB")
+        .style("stroke-width", "1");
+	svg.append('g')
+			.attr('class','axis y')
+			.attr('transform','translate('+padding+",0)")
+		.call(yaxis)
+      .style("stroke", "#BBB")
+        .style("stroke-width", "1");
+
+    var keyy = ["Doctorate (PhD)","Master's","Bachelor's","Other"];
+  var legend = svg.append("g")
+      .attr("font-family", "sans-serif")
+      .attr("font-size", 10)
+      .attr("text-anchor", "end")
+    .selectAll("g")
+    .data(keyy)
+    .enter().append("g")
+      .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+
+  legend.append("rect")
+      .attr("x", w - 19)
+      .attr("width", 19)
+      .attr("height", 19)
+      .attr("fill", accent);
+
+  legend.append("text")
+      .attr("x", w - 24)
+      .attr("y", 9.5)
+      .attr("dy", "0.32em")
+      .text(function(d) { return d; })
+        .style("stroke", "#BBB")
+        .style("stroke-width", "1");
+
+
+
     </script>
 </body>
 </html>
