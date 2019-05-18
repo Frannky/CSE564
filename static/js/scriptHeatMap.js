@@ -2,7 +2,6 @@
 function drawHeatmap(data, groupData, div, myWidth, myHeight, myMargin) {
     var width = myWidth - myMargin.left - myMargin.right,
     height = myHeight - myMargin.top - myMargin.bottom;
-    //var xAxisName = ['STATUS', 'STATE', 'TOTAL', 'WAGE', 'PW', 'YEAR', 'OCCUPATION']
     var xAxisName = groupData;
     var yAxisName = xAxisName;
 
@@ -16,11 +15,11 @@ function drawHeatmap(data, groupData, div, myWidth, myHeight, myMargin) {
         .padding(padding_heatmap);
 
     var svg = d3.select("svg")
-        .attr("width", width - margin.left - margin.right)
-        .attr("height", height - margin.top - margin.bottom)
+        .attr("width", width+50)
+        .attr("height", height)
         .append("g")
         .attr("transform",
-            "translate(" + margin.left + "," + margin.top + ")");
+            "translate(" + (margin.left + 50) + "," + margin.top + ")");
 
     var xAxis = svg.append("g")
         .attr("transform", "translate(0," + (height - margin.bottom - margin.top) + ")")

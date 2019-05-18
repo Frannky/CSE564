@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+
+    <title>H1B data visualization</title>
+    <!-- Styles -->
+<link rel="stylesheet" href="../static/lib/bootstrap-4.3.1-dist/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Droid+Sans" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" href="../static/lib/fontawesome-pro-5.8.2-web/css/all.css">
+  </head>
+</head>
+
+<body>
+    <aside class="side-nav" id="show-side-navigation1">
+        <i class="fa fa-bars close-aside hidden-sm hidden-md hidden-lg" data-close="show-side-navigation1"></i>
+        <div class="heading">
+            <div class="info">
+                <h3><a href="#">Final Project</a></h3>
+                <p>Visualization</p>
+            </div>
+        </div>
+        <ul class="categories">
+            <li>
+                <i class="fal fa-calendar-alt" aria-hidden="true"></i>
+                <a href="#"> H1B</a>
+                <ul class="side-nav-dropdown">
+                    <li><a href="{{ url_for('index') }}">Overview</a></li>
+                </ul>
+            </li>
+        </ul>
+    </aside>
+
+    <section id="contents">
+        <section class="statistics">
+            <div class="container-fluid">
+                <div class="box" id="chart">
+                    <div class="map_container"> <!-- style of container defined by you-->
+                        <svg viewBox="0 0 820 800" preserveAspectRatio="xMinYMin slice" width="100%" height="100%" style="width: 100%; overflow: hidden;"></svg>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </section>
+
+    <script src="http://d3js.org/d3.v4.min.js"></script>
+    <script src="https://rawgit.com/JesseCHowe/e9d4643984e168477d8fb8187bc1eda3/raw/7d5a4622bed0f9ca4e6392d29f32a30e502d2ff7/gridmap-layout-test.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+
+    <script src="../static/js/const.js"></script>
+    <script src="../static/js/script.js"></script>
+    <script src="../static/js/scriptScatterPlot.js"></script>
+
+    <script>
+        const DURATION = 750;
+
+        var data = {{data.chart_data | safe}};
+        var myGroup = {{data.group_data | safe}};
+        var myX = {{data.x_data | safe}};
+        console.log(data);
+
+        function updateData(plotname) {
+            $.post("", {'data': plotname}, function(data_infunc){
+                dataNew = JSON.parse(data_infunc.chart_data)
+                console.log(plotname);
+                console.log(dataNew);
+            })
+        }
+
+        drawLinePlot(data, "#chart", myGroup, myX, width_scatterPlot, height_scatterplot, margin_scatterplot);
+
+    </script>
+</body>
+</html>

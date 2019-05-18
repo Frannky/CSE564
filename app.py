@@ -62,11 +62,11 @@ def index():
 # def index():
     ###
 
-@app.route("/gridmap<string:chartname>", methods = ['POST', 'GET'])
+@app.route("/gridmap/<string:chartname>", methods = ['POST', 'GET'])
 def gridmap(chartname):
     if chartname == "Mean Wage":
         groups = (dataH1B.groupby('STATE').mean().WAGE).round(2)
-        data = json.dumps(groups.tolist(), indent=2)
+        data = json.dumps(groups.to_dict(), indent=2)
         dataDomain = [0, 375000, 750000, 1125000, 1500000]
     elif chartname == "Total Petitions":
         total = dataH1B.groupby('STATE').size()
@@ -114,6 +114,37 @@ def barchart():
     data = {'chart_data': chart_data}
     return render_template('barchart.html', data=data)
 
+@app.route("/stackedbarchart/<string:chartname>", methods=['POST', 'GET'])
+def stackedbarchart(chartname):
+    if chartname == "Petition By Education":
+        removeCategory = dataPWD.groupby('EDUCATION').size().nsmallest(3).index
+        dataToMerge, group = mergeOther(dataPWD.copy(), ct.EDUCATION, removeCategory, 'EDUCATION')
+
+        data = dataToMerge.groupby('YEAR').EDUCATION.apply(pd.value_counts)
+
+        res = pd.DataFrame(columns=group)
+        index = 0
+        for x in ct.YEARS:
+            row = []
+            for g in range(len(group)):
+                row.append(data[x][g])
+            res.loc[x] = row
+        res['x'] = res.index
+        res['total'] = dataToMerge.groupby('YEAR').size()
+
+        data = res
+        dataGroup = group
+        dataX = ct.YEARS
+
+    chart_data = data.to_dict(orient='records')
+    chart_data = json.dumps(chart_data, indent=2)
+    group_data = json.dumps(dataGroup, indent=2)
+    x_data = json.dumps(dataX, indent=2)
+    data = {'chart_data': chart_data}
+    data['group_data'] = group_data
+    data['x_data'] = x_data
+    return render_template('stackedbarchart.html', data=data)
+
 @app.route("/piechart/<int:data_id>", methods = ['POST', 'GET'])
 def piechart(data_id):
     if data_id == 0:
@@ -132,6 +163,58 @@ def piechart(data_id):
     chart_data = json.dumps(chart_data, indent=2)
     data = {'chart_data': chart_data}
     return render_template('test.html', data=data)
+
+def mergeOther(dataOri, oriCategory, removeCategory, colname):
+    data = dataOri
+    newCategory = list(set(range(len(oriCategory))) - set(removeCategory))
+    newCategoryName = np.array(oriCategory)[newCategory].tolist()
+    newCategoryName.append("Other")
+
+    newCategoryMap = {}
+    for old in range(len(oriCategory)):
+        if old in newCategory:
+            newCategoryMap[old] = newCategory.index(old)
+        else:
+            newCategoryMap[old] = len(newCategory)
+
+    data[colname] = data[colname].map(newCategoryMap)
+    return [data, newCategoryName]
+
+@app.route("/scatterplot/<string:chartname>", methods = ['POST', 'GET'])
+def scatterplot(chartname):
+    if chartname == "Petition By Education":
+        removeCategory = dataPWD.groupby('EDUCATION').size().nsmallest(3).index
+        dataToMerge, group = mergeOther(dataPWD.copy(), ct.EDUCATION, removeCategory, 'EDUCATION')
+
+        data = dataToMerge.groupby('YEAR').EDUCATION.apply(pd.value_counts)
+        res = pd.DataFrame(columns=['x', 'y', 'group'])
+        index = 0
+        for x, value in data.iteritems():
+            res.loc[index] = [x[0], value, x[1]]
+            index = index + 1
+
+        data = res
+        dataGroup = group
+        dataX = dataToMerge.YEAR.unique().tolist()
+
+    elif chartname == "1":
+        values = dataPWD.groupby('EDUCATION').YEAR.apply(pd.value_counts)
+        dataPetition = pd.DataFrame(columns=['education', 'year', 'value'])
+        index = 0
+        for x, value in values.iteritems():
+            dataPetition.loc[index] = [x[0], x[1], value]
+            index = index + 1
+        data = dataPetition
+        dataGroup = ct.EDUCATION;
+
+    chart_data = data.to_dict(orient='records')
+    chart_data = json.dumps(chart_data, indent=2)
+    group_data = json.dumps(dataGroup, indent=2)
+    x_data = json.dumps(dataX, indent=2)
+    data = {'chart_data': chart_data}
+    data['group_data'] = group_data
+    data['x_data'] = x_data
+    return render_template('scatterplot.html', data=data)
 
 @app.route("/test", methods = ['POST', 'GET'])
 def test():

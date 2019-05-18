@@ -62,7 +62,7 @@ function drawGridMap(data, dataname, states, domain, div, myWidth, myHeight, myG
         .style("fill", "#1e1e1e")
         .attr("d", "M 0,0, L 30,0, L 15,20 Z")
         .attr("transform", function (d, i) {
-            return "translate(" + (myWidth.Width / 2 - 15) + "," + 690 + ")";
+            return "translate(" + (myWidth / 2 - 15) + "," + 690 + ")";
         });
 
     legendtri
@@ -113,8 +113,16 @@ function drawDataGridmap(data, dataname, states, svg, myGridWidth, myGridHeight,
             var w = window.innerWidth;
             var h = window.innerHeight;
             tooltip
-                .style("display", "inline-block")
-                .html(dataname + ": " + "<br>" + data[states.indexOf(d.key)]);
+                .style("display", "inline-block");
+            if (data[states.indexOf(d.key)] == null)
+            {
+                tooltip
+                    .html("Data Missing");
+            }
+            else {
+                tooltip
+                    .html(dataname + ": " + "<br>" + data[states.indexOf(d.key)]);
+            }
             if (d3.event.pageX < w / 2) {
                 tooltip.style("left", d3.event.pageX + 20 + "px");
             } else {

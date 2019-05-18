@@ -109,18 +109,6 @@ def isfloat(value):
   except ValueError:
     return False
 
-def getDataH1b():
-    dfH1B = pd.read_csv(ct.PATH_H1B + "merged" + ct.EXT_TO, low_memory=False)
-    dfH1B = dfH1B[~dfH1B['SOC_CODE'].isin(ct.DROP_SOCCODE)]
-    dfH1B['OCCUPATION'] = dfH1B.apply(lambda row: getOccupation(row), axis=1)
-    dfH1B['OCCUPATION'] = dfH1B['OCCUPATION'].astype(int)
-
-    dfs = []
-    for i in range(5):
-        dfs.append(H1Bdata(i))
-    dfH1B = pd.concat(dfs)
-    dfH1B.to_csv(ct.PATH_H1B + "merged" + ct.EXT_TO, index=False)
-
 def PWD(i):
     df = pd.read_excel(ct.PATH_PWD + str(ct.YEARS[i]) + ct.EXT_ORI, index_col=None)
     df = df[ct.COLUMNS_YEAR_PWD[i]]
@@ -256,11 +244,22 @@ def numericEducation(filepath):
     df = df.replace({'EDUCATION': mapEducation})
 
     df.to_csv(filepath + "numeric" + ct.EXT_TO, index=False)
+
+def getDataH1b():
+    dfs = []
+    for i in range(5):
+        dfs.append(H1Bdata(i))
+    dfH1B = pd.concat(dfs)
+    dfH1B.to_csv(ct.PATH_H1B + "merged" + ct.EXT_TO, index=False)
+
+# getDataH1b()
+# numeric(ct.PATH_H1B, ct.STATUS_H1B)
+
 # getDataPWD()
 # numeric(ct.PATH_PWD, ct.STATUS_PWD)
 #numericEducation(ct.PATH_PWD)
 
-#getDataPERM()
-#numeric(ct.PATH_PERM, ct.STATUS_PERM)
+# getDataPERM()
+# numeric(ct.PATH_PERM, ct.STATUS_PERM)
 
 #TODO numeric PERM's citizenship: probably not, too many countries

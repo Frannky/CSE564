@@ -1,8 +1,3 @@
-DATAPATH = 'data/BudgetItaly.csv'
-COL_NAMES = ["wfood","whouse","wmisc","pfood","phouse","pmisc","totexp","year","income","size","pct"]
-# K = 3
-# DATA_FRAC = 0.5
-
 PATH_H1B = 'data\H-1B_'
 PATH_PWD = 'data\PWD_'
 PATH_PERM = 'data\PERM_'
@@ -17,12 +12,12 @@ STATES_FULL = ["ALASKA","ALABAMA","ARKANSAS","ARIZONA","CALIFORNIA","COLORADO","
                "PALAU","RHODE ISLAND","SOUTH CAROLINA","SOUTH DAKOTA","TENNESSEE","TEXAS","UTAH","VIRGINIA","VIRGIN ISLANDS","VERMONT",
                "WASHINGTON","WISCONSIN","WEST VIRGINIA","WYOMING"]
 
-STATUS_H1B = ['CERTIFIED-WITHDRAWN', 'CERTIFIED', 'DENIED', 'WITHDRAWN', 'REJECTED']
+STATUS_H1B = ['CERTIFIED', 'CERTIFIED-WITHDRAWN', 'DENIED', 'WITHDRAWN', 'REJECTED']
 STATUS_PWD = ['DETERMINATION ISSUED', 'REDETERMINATION REVIEW - AFFIRMED',
        'REDETERMINATION REVIEW-OVERTURNED - MODIFIED',
        'CENTER DIRECTOR REVIEW - MODIFIED DETERMINATION',
        'CENTER DIRECTOR REVIEW - AFFIRMED DETERMINATION']
-STATUS_PERM = ['Certified-Expired', 'Certified', 'Denied', 'Withdrawn']
+STATUS_PERM = ['Certified', 'Certified-Expired', 'Denied', 'Withdrawn']
 EDUCATION = ['Doctorate (PhD)', "Master's", "Bachelor's", "Associate's", 'High School/GED',
              'Other Degree (JD, MD, etc.)', 'None']
 
@@ -57,9 +52,7 @@ COLUMNS_PWD = [
     'JOB_TITLE',
     'EDUCATION',
     'WAGE',
-    'WAGE_UNIT',
-    'PW',
-    'PW_UNIT']
+    'WAGE_UNIT']
 
 COLUMNS_PERM = [
     'STATUS',
@@ -75,8 +68,6 @@ COLUMNS_PERM = [
     'WAGE',
     'WAGE_UNIT',
     'CITIZENSHIP']
-
-YEARS = [2014, 2015, 2016, 2017, 2018]
 
 # for index, row in df.iterrows():
 UNITS = ['Year', 'Month', 'Bi-Weekly', 'Week', 'Hour']
