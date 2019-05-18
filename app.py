@@ -162,7 +162,7 @@ def piechart(data_id):
     chart_data = data.to_dict(orient='records')
     chart_data = json.dumps(chart_data, indent=2)
     data = {'chart_data': chart_data}
-    return render_template('test.html', data=data)
+    return render_template('piechart.html', data=data)
 
 def mergeOther(dataOri, oriCategory, removeCategory, colname):
     data = dataOri
