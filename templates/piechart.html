@@ -71,7 +71,189 @@
             })
         }
 
-        drawPieChart(data, "#chart", 700, 700, margin);
+                   EDUCATION = ['Doctorate (PhD)', "Master's", "Bachelor's", "Associate's", 'High School/GED',
+                        'Other Degree (JD, MD, etc.)', 'None']
+
+
+
+
+                    for(var i = 0 ; i< data.length; i++){
+
+                        data[i]["x"] = EDUCATION[i];
+                    }
+
+                    newData = [
+                        {y: 3648, x: "Other" },
+                        {y: 8993, x: "Bachelor's" },
+                        {y: 3270, x: "Master's" },
+                        {y: 11736, x: "Doctorate (PhD)" }
+
+
+
+
+            ];
+
+                   var margin = {top: 20, right: 20, bottom: 30, left: 40},
+                   width = 780 - margin.left - margin.right,
+                   height = 500 - margin.top - margin.bottom,
+                   thickness = 40;
+                   duration = 750;
+                   padding = 10;
+                   opacity = 1.2;
+                   opacityHover = 1;
+                   otherOpacityOnHover = .8;
+                   tooltipMargin = 13;
+                      // Think back to 5th grade. Radius is 1/2 of the diameter. What is the limiting factor on the diameter? Width or height, whichever is smaller
+                      radius = Math.min(width, height) / 2;
+
+
+
+                   var color = d3.scaleOrdinal()
+                        .range(["#fec44f", "#a1d99b","#99d8c9",  "#fc9272"]);
+
+                   var pie = d3.pie()
+                      .value(function(d) { return d.y; })(newData);
+
+                   var arc = d3.arc()
+                      .outerRadius(radius - 10)
+                      .innerRadius(0);
+
+                   var labelArc = d3.arc()
+                      .outerRadius(radius - 40)
+                      .innerRadius(radius - 40);
+
+                   var svg = d3.select("svg")
+                      .append("svg")
+                      .attr("width", width)
+                      .attr("height", height)
+                          .append("g")
+                          .attr("transform", "translate(" + width/2 + "," + height/2 +")");
+
+                   var g = svg.selectAll("arc")
+                      .data(pie)
+                      .enter().append("g")
+                      .attr("class", "arc");
+
+                   g.append("path")
+                      .attr("d", arc)
+                      .attr('fill', (d,i) => color(i))
+                      .style("fill", function(d,i) { return color(i);})
+                       .style('opacity', opacity)
+                    .style('stroke', 'black')
+                     .on("mouseover", function(d) {
+                  d3.selectAll('path')
+                    .style("opacity", otherOpacityOnHover);
+                  d3.select(this)
+                    .style("opacity", opacityHover);
+
+                  let g = d3.select("svg")
+                    .style("cursor", "pointer")
+                    .append("g")
+                    .attr("class", "tooltip")
+                    .style("opacity", 0);
+
+                  g.append("text")
+                    .attr("class", "name-text")
+                    .text(`${d.data.x} (${d.data.y})`)
+                    .attr('text-anchor', 'middle');
+
+                  let text = g.select("text");
+                  let bbox = text.node().getBBox();
+                  let padding = 2;
+                  g.insert("rect", "text")
+                    .attr("x", bbox.x - padding)
+                    .attr("y", bbox.y - padding)
+                    .attr("width", bbox.width + (padding*2))
+                    .attr("height", bbox.height + (padding*2))
+                    .style("fill", "#bdbdbd")
+                    .style("opacity", 0.75);
+                })
+              .on("mousemove", function(d) {
+                    let mousePosition = d3.mouse(this);
+                    let x = mousePosition[0] + width/2;
+                    let y = mousePosition[1] + height/2 - tooltipMargin;
+
+                    let text = d3.select('.tooltip text');
+                    let bbox = text.node().getBBox();
+                    if(x - bbox.width/2 < 0) {
+                      x = bbox.width/2;
+                    }
+                    else if(width - x - bbox.width/2 < 0) {
+                      x = width - bbox.width/2;
+                    }
+
+                    if(y - bbox.height/2 < 0) {
+                      y = bbox.height + tooltipMargin * 2;
+                    }
+                    else if(height - y - bbox.height/2 < 0) {
+                      y = height - bbox.height/2;
+                    }
+
+                    d3.select('.tooltip')
+                      .style("opacity", 1)
+                      .attr('transform',`translate(${x}, ${y})`);
+                })
+              .on("mouseout", function(d) {
+                  d3.select("svg")
+                    .style("cursor", "none")
+                    .select(".tooltip").remove();
+                d3.selectAll('path')
+                    .style("opacity", opacity);
+                })
+              .on("touchstart", function(d) {
+                  d3.select("svg")
+                    .style("cursor", "none");
+              })
+              .each(function(d, i) { this._current = i; });;
+
+          {#  g.append("text")#}
+          {#    .attr("transform", function(d) { return "translate(" + labelArc.centroid(d) + ")"; })#}
+          {#    .text(function(d) { return d.data.x;})#}
+          {#      .attr("fill",'#fff')#}
+          {#      .style("stroke", "#000")#}
+          {#.style("stroke-width", "0.2");#}
+
+            {#drawPieChart(data, "#chart", 700, 700, margin);#}
+
+                   var legend = svg.selectAll('.legend-entry').data(newData)
+                    .enter().append('g')
+                    .attr('class', 'legend-entry')
+                       .style('display', 'flex')
+            			.style('align-items', 'center')
+            			.style('margin-right', '20px');
+
+
+
+                    legend.append('rect')
+                     .attr('class', 'legend-rect')
+                     .attr('x', -330)
+                     .attr('y', function (d, i) { return 120+ i * 30 })
+                     .attr('width', "10px")
+                     .attr('height', "10px")
+                     .attr('fill', function (d,i) {
+                       return color(i)
+                      })
+
+                    legend.append('text')
+                     .attr('class', 'legend-text')
+                     .attr('x', -315)
+                        .attr('width', "10px")
+                     .attr('height', "10px")
+                     .attr('y', function (d, i) { return 130 +  i * 30 })
+                     .text(d => `${d.x}`)
+                        .style("stroke", "#BBB")
+                      .style("stroke-width", "1.3");
+
+
+            {#var data = [{year: "2014", "Doctorate (PhD)": 2960, "Master's": 739, "Bachelor's": 2127, "Other": 1043},#}
+            {#    {year: "2015", "Doctorate (PhD)": 2669, "Master's": 699, "Bachelor's": 1702, "Other": 933},#}
+            {#    {year: "2016", "Doctorate (PhD)": 2267, "Master's": 543, "Bachelor's": 1160, "Other": 599},#}
+            {#    {year: "2017", "Doctorate (PhD)": 2119, "Master's": 561, "Bachelor's": 1275, "Other": 543},#}
+            {#    {year: "2018", "Doctorate (PhD)": 1721, "Master's": 728, "Bachelor's": 2729, "Other": 529}#}
+            {#];#}
+
+
+
 
     </script>
 </body>
