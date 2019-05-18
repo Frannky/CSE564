@@ -224,7 +224,19 @@ def test():
     data = {'chart_data': chart_data}
     return render_template('test.html', data=data)
 
+@app.route("/test2/<string:dataset>", methods = ['POST', 'GET'])
+def test2(dataset):
+    if dataset == "H1B":
+        removeCategory = dataPWD.groupby('EDUCATION').size().nsmallest(3).index
+        data, group = mergeOther(dataPWD.copy(), ct.EDUCATION, removeCategory, 'EDUCATION')
 
+
+    chart_data = data.to_dict(orient='records')
+    chart_data = json.dumps(chart_data, indent=2)
+    group_data = json.dumps(group, indent=2)
+    data = {'chart_data': chart_data}
+    data['group_data'] = group_data
+    return render_template('test2.html', data=data)
 
 # def getScatterMDS(data):
 #     dataframe = applyMDS(data, 2)

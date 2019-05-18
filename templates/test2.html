@@ -24,32 +24,9 @@
                 <i class="fal fa-calendar-alt" aria-hidden="true"></i>
                 <a href="#"> H1B</a>
                 <ul class="side-nav-dropdown">
-                    <li><a href="{{ url_for('test') }}">Test</a></li>
-                    <li><a href="{{ url_for('test2', dataset='H1B') }}">Test2</a></li>
                     <li><a href="{{ url_for('index') }}">Overview</a></li>
-                    <li><a href="{{ url_for('gridmap', chartname='Mean Wage') }}">Mean Wage</a></li>
-                    <li><a href="{{ url_for('gridmap', chartname='Total Petitions') }}">Total Petitions</a></li>
-                    <li><a href="{{ url_for('heatmap', data_id=0) }}">Correlation</a></li>
-                    <li><a href="{{ url_for('barchart') }}">Bar Chart</a></li>
-                    <li><a href="{{ url_for('piechart', data_id=1) }}">Pie Chart</a></li>
-                    <!--<li><a href="#" onclick="updateP('EmployerPeitionRank')">Top Petitions</a></li>-->
                 </ul>
             </li>
-            <li>
-                <a href="#"> PWD data</a>
-                <ul class="side-nav-dropdown">
-                    <li><a href="{{ url_for('heatmap', data_id=1) }}">Correlation</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="#"> PERM data</a>
-                <ul class="side-nav-dropdown">
-                    <li><a href="{{ url_for('heatmap', data_id=2) }}">Correlation</a></li>
-                    <li><a href="{{ url_for('stackedbarchart', chartname='Petition By Education') }}">Petition By Education</a></li>
-                    <li><a href="{{ url_for('scatterplot', chartname='Petition By Education') }}">Petition By Education</a></li>
-                </ul>
-            </li>
-        </ul>
     </aside>
 
     <section id="contents">
@@ -70,43 +47,18 @@
             </div>
         </div>
 
-        <!--<section class="statistics">
+        <section class="charts">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-2">
-                        <div class="box"  id="EmployerPeitionRank2014">
-                            <p>2014</p>
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="box" id="EmployerPeitionRank2015">
-                            <p>2015</p>
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="box" id="EmployerPeitionRank2016">
-                            <p>2016</p>
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="box" id="EmployerPeitionRank2017">
-                            <p>2017</p>
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="box" id="EmployerPeitionRank2018">
-                            <p>2018</p>
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="box">
-                            <p>To be continued...</p>
-
+                    <div class="col-md-12">
+                        <div class="chart-container">
+                            <h3>Chart</h3>
+                            <canvas id="myChart0"></canvas>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>-->
+        </section>
         <section class="charts">
             <div class="container-fluid">
                 <div class="row">
@@ -160,23 +112,6 @@
                 </div>
             </div>
         </section>
-        <section class="chrt3">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-9">
-                        <div class="chart-container">
-                            <canvas id="chart3" width="100%"></canvas>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="box">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <div class="overlay"></div>
     </section>
 
     <!-- load the d3.js library -->
@@ -191,9 +126,8 @@
     <script>
         const DURATION = 750;
 
-        var data_map = {{data.map_data | safe}};
-        var data_bar = {{data.bar_data | safe}};
-        var data_scatter = {{data.scatter_data | safe}};
+        var data = {{data.chart_data | safe}};
+
         console.log(data);
 
         function updateP(labelname) {
