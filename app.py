@@ -64,19 +64,56 @@ def index():
 
 @app.route("/gridmap/<string:chartname>", methods = ['POST', 'GET'])
 def gridmap(chartname):
-    if chartname == "Mean Wage":
-        groups = (dataH1B.groupby('STATE').mean().WAGE).round(2)
-        data = json.dumps(groups.to_dict(), indent=2)
-        dataDomain = [0, 375000, 750000, 1125000, 1500000]
-    elif chartname == "Total Petitions":
-        total = dataH1B.groupby('STATE').size()
-        data = json.dumps(total.tolist(), indent=2)
-        dataDomain = [0, 125000, 250000, 375000, 500000]
+    variables = chartname.split(' ')
+    category = "none"
+    data = []
+    dataDomain = []
+    categories = []
+    categoryName = "none"
+    if len(variables) > 1:
+        chartname = variables[0]
+        category = variables[1]
+        categoryId = int(variables[2])
 
+    if chartname == "MeanWage":
+        chartname = "Mean Wage"
+        if category == "none":
+            groups = (dataH1B.groupby('STATE').mean().WAGE).round(2)
+            data = json.dumps(groups.to_dict(), indent=2)
+            dataDomain = [0, 375000, 750000, 1125000, 1500000]
+        elif category == "OCCUPATION":
+            categories = list(ct.OCCUPATION.keys())
+            categoryVal = categories[categoryId]
+            categoryName = ct.OCCUPATION[categoryVal] + " Occupation"
+            categories = list(ct.OCCUPATION.values())
+            groups = (dataH1B[dataH1B[category] == categoryVal].groupby('STATE').mean().WAGE).round(2)
+            data = json.dumps(groups.to_dict(), indent=2)
+            for i in range(5):
+                dataDomain.append(i * int(round(groups.max() / 4, -4)))
+        elif category == "YEAR":
+            categories = ct.YEARS.keys()
+            categoryVal = categories[categoryId]
+            categoryName = ct.YEARS[categoryVal] + " Occupation"
+            groups = (dataH1B[dataH1B[category] == ct.YEARS[categoryId]].groupby(
+                'STATE').mean().WAGE).round(2)
+            data = json.dumps(groups.to_dict(), indent=2)
+            for i in range(5):
+                dataDomain.append(i * int(round(groups.max() / 4, -4)))
+    elif chartname == "TotalPetitions":
+        chartname = "Total Petitions"
+        if category == "none":
+            total = dataH1B.groupby('STATE').size()
+            resdata = json.dumps(total.tolist(), indent=2)
+            dataDomain = [0, 125000, 250000, 375000, 500000]
+    else:
+        data = []
     data = {'chart_data': data}
     data['dataname'] = "'" + chartname + "'"
     data['states'] = ct.STATES
     data['domain'] = dataDomain
+    data['category'] = "'" + category + "'"
+    data['categories'] = categories
+    data['categoryname'] = "'" + categoryName + "'"
     return render_template('gridmap.html', data=data)
 
 @app.route("/heatmap/<int:data_id>", methods = ['POST', 'GET'])
@@ -226,16 +263,24 @@ def test():
 
 @app.route("/test2/<string:dataset>", methods = ['POST', 'GET'])
 def test2(dataset):
-    if dataset == "H1B":
-        removeCategory = dataPWD.groupby('EDUCATION').size().nsmallest(3).index
-        data, group = mergeOther(dataPWD.copy(), ct.EDUCATION, removeCategory, 'EDUCATION')
 
+    #gridmap: gm
+    gm_category = "none"
+    gm_categories = []
+    gm_categoryName = "none"
 
-    chart_data = data.to_dict(orient='records')
-    chart_data = json.dumps(chart_data, indent=2)
-    group_data = json.dumps(group, indent=2)
-    data = {'chart_data': chart_data}
-    data['group_data'] = group_data
+    gm_dataset = "Mean Wage"
+    gm_groups = (dataH1B.groupby('STATE').mean().WAGE).round(2)
+    gm_data = json.dumps(gm_groups.to_dict(), indent=2)
+    gm_dataDomain = [0, 375000, 750000, 1125000, 1500000]
+
+    data = {'chart_data': gm_data}
+    data['dataname'] = "'" + gm_dataset + "'"
+    data['states'] = ct.STATES
+    data['domain'] = gm_dataDomain
+    data['category'] = "'" + gm_category + "'"
+    data['categories'] = gm_categories
+    data['categoryname'] = "'" + gm_categoryName + "'"
     return render_template('test2.html', data=data)
 
 # def getScatterMDS(data):

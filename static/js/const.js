@@ -27,22 +27,31 @@ var width_heatmap = 750,
 var padding_heatmap = 0.01;
 var padding_domain = 0.01;
 
-var rangeRed = ["#efefef", "#ff8c00"],
-    rangeMint = ["efefef", "#69b3a2"],
-    rangeGreen = ["#efefef", "#a2cc38"]
-    rangeBlueRed = [myBlue, myRed];
-
 var myYellow = "#ffcd56",
     myBlue = "#4bc0c0",
     myRed = "#ff6384",
-    myGreen = "#99b433",
+    myGreen = "#a2cc38 ",
     myPurple = "#926EBF",
-    myOrangle = "#FE8F1D",
+    myOrangle = "#ff8c00",
     myIndigo = "#52D2BC",
-    myPink = "#F395C7";
+    myMint = "#69b3a2",
+    myPink = "#F395C7",
+    myWhite = "#efefef",
+    sbRed = "#990000",
+    sbBrightRed = "#D52027",
+    sbBlack = "#000000"
+    ;
+
+var rangeOrange = [myWhite, myOrangle],
+    rangeMint = [myWhite, myMint],
+    rangeGreen = [myWhite, myGreen],
+    rangeOrange = [myWhite, myOrangle],
+    rangeBlue = [myWhite, myBlue],
+    rangeSbRed = [myWhite, sbBrightRed],
+    rangeBlueRed = [myBlue, myRed];
 
 var myFontColor = "#BBB";
 
-var myColorSet = [myRed, myYellow, myBlue, myPurple, myOrangle, myIndigo]
+var myColorSet = [myRed, myYellow, myBlue, myPurple, myOrangle, myIndigo];
 
 // var parseDate = d3.time.format("%d-%b-%y").parse;

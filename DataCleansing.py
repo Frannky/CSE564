@@ -245,6 +245,16 @@ def numericEducation(filepath):
 
     df.to_csv(filepath + "numeric" + ct.EXT_TO, index=False)
 
+def numericOccupation(filepath):
+    df = pd.read_csv(filepath + "numeric" + ct.EXT_TO, low_memory=False)
+
+    getOccu = lambda x: x if x < 10000 else x // 10000
+    # Numeric education
+    df['OCCUPATION'] = df['OCCUPATION'].apply(getOccu)
+    df = df[df.OCCUPATION.isin(ct.OCCUPATION)]
+
+    df.to_csv(filepath + "numeric" + ct.EXT_TO, index=False)
+
 def getDataH1b():
     dfs = []
     for i in range(5):
@@ -254,6 +264,7 @@ def getDataH1b():
 
 # getDataH1b()
 # numeric(ct.PATH_H1B, ct.STATUS_H1B)
+# numericOccupation(ct.PATH_H1B)
 
 # getDataPWD()
 # numeric(ct.PATH_PWD, ct.STATUS_PWD)
@@ -261,5 +272,3 @@ def getDataH1b():
 
 # getDataPERM()
 # numeric(ct.PATH_PERM, ct.STATUS_PERM)
-
-#TODO numeric PERM's citizenship: probably not, too many countries

@@ -4,107 +4,137 @@
 
     <title>H1B data visualization</title>
     <!-- Styles -->
-<link rel="stylesheet" href="../static/lib/bootstrap-4.3.1-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/lib/bootstrap-4.3.1-dist/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css?family=Droid+Sans" rel="stylesheet">
     <link rel="stylesheet" href="../static/css/style.css">
     <link rel="stylesheet" href="../static/lib/fontawesome-pro-5.8.2-web/css/all.css">
-  </head>
+</head>
 </head>
 
 <body>
-    <aside class="side-nav" id="show-side-navigation1">
-        <i class="fa fa-bars close-aside hidden-sm hidden-md hidden-lg" data-close="show-side-navigation1"></i>
-        <div class="heading">
-            <div class="info">
-                <h3><a href="#">Final Project</a></h3>
-                <p>Visualization</p>
+<aside class="side-nav" id="show-side-navigation1">
+    <i class="fa fa-bars close-aside hidden-sm hidden-md hidden-lg" data-close="show-side-navigation1"></i>
+    <div class="heading">
+        <div class="info">
+            <h3><a href="#">Final Project</a></h3>
+            <p>Visualization</p>
+        </div>
+    </div>
+    <ul class="categories">
+        <li>
+            <i class="fal fa-calendar-alt" aria-hidden="true"></i>
+            <a href="#">Overview</a>
+            <ul class="side-nav-dropdown">
+                <li><a href="{{ url_for('index') }}">H1B</a></li>
+            </ul>
+        <li>
+            <a href="#">Mean Wage</a>
+            <ul class="side-nav-dropdown" id="gridmapcategory">
+                <li><a href="{{ url_for('gridmap', chartname='MeanWage OCCUPATION 0') }}">Management</a></li>
+                <li><a href="{{ url_for('gridmap', chartname='MeanWage OCCUPATION 1') }}">Business and Finacial Operations</a></li>
+                <li><a href="{{ url_for('gridmap', chartname='MeanWage OCCUPATION 2') }}">Computer and Mathematical</a></li>
+                <li><a href="{{ url_for('gridmap', chartname='MeanWage OCCUPATION 3') }}">Architecture and Engineering</a></li>
+                <li><a href="{{ url_for('gridmap', chartname='MeanWage OCCUPATION 4') }}">Life, Physical, and Social Science Occupation</a></li>
+                <li><a href="{{ url_for('gridmap', chartname='MeanWage OCCUPATION 5') }}">Community and Social Service</a></li>
+                <li><a href="{{ url_for('gridmap', chartname='MeanWage OCCUPATION 6') }}">Legal</a></li>
+                <li><a href="{{ url_for('gridmap', chartname='MeanWage OCCUPATION 7') }}">Education, Training, and Library</a></li>
+                <li><a href="{{ url_for('gridmap', chartname='MeanWage OCCUPATION 8') }}">Arts, Design, Entertainment, Sports, and Media</a></li>
+                <li><a href="{{ url_for('gridmap', chartname='MeanWage OCCUPATION 9') }}">Healthcare Practitioners and Technical</a></li>
+                <li><a href="{{ url_for('gridmap', chartname='MeanWage OCCUPATION 10') }}">Healthcare Support</a></li>
+                <li><a href="{{ url_for('gridmap', chartname='MeanWage OCCUPATION 11') }}">Protective Service</a></li>
+                <li><a href="{{ url_for('gridmap', chartname='MeanWage OCCUPATION 12') }}">Food Preparation and Serving Related</a></li>
+                <li><a href="{{ url_for('gridmap', chartname='MeanWage OCCUPATION 13') }}">Building and Grounds Cleaning and Maintenance</a></li>
+                <li><a href="{{ url_for('gridmap', chartname='MeanWage OCCUPATION 14') }}">Personal Care and Service</a></li>
+                <li><a href="{{ url_for('gridmap', chartname='MeanWage OCCUPATION 15') }}">Sales and Related</a></li>
+                <li><a href="{{ url_for('gridmap', chartname='MeanWage OCCUPATION 16') }}">Office and Administrative Support</a></li>
+                <li><a href="{{ url_for('gridmap', chartname='MeanWage OCCUPATION 17') }}">Farming, Fishing, and Forestry</a></li>
+                <li><a href="{{ url_for('gridmap', chartname='MeanWage OCCUPATION 18') }}">Construction and Extration</a></li>
+                <li><a href="{{ url_for('gridmap', chartname='MeanWage OCCUPATION 19') }}">Installation, Maintenance, and Repair</a></li>
+                <li><a href="{{ url_for('gridmap', chartname='MeanWage OCCUPATION 20') }}">Production</a></li>
+                <li><a href="{{ url_for('gridmap', chartname='MeanWage OCCUPATION 21') }}">Transportation and Material Moving</a></li>
+
+                <!--<li><a href="{{ url_for('gridmap', chartname='MeanWage YEAR 0') }}">Mean Wage By Year</a></li>-->
+            </ul>
+        </li>
+        </li>
+    </ul>
+</aside>
+
+<section id="contents">
+    <section class="statistics">
+        <div class="container-fluid">
+            <div class="box" id="gridmap">
+                <div class="map_container">
+                    <svg id="svg" viewBox="0 0 820 800" preserveAspectRatio="xMinYMin slice" width="100%" height="100%"
+                         style="width: 100%; overflow: hidden;"></svg>
+                </div>
             </div>
         </div>
-        <ul class="categories">
-            <li>
-                <i class="fal fa-calendar-alt" aria-hidden="true"></i>
-                <a href="#"> H1B</a>
-                <ul class="side-nav-dropdown">
-                    <li><a href="{{ url_for('index') }}">Overview</a></li>
-                </ul>
-            </li>
-        </ul>
-    </aside>
 
-    <section id="contents">
-        <nav class="navbar navbar-default">
-            <div class="container-fluid">
-                <div class="collapse navbar-collapse navbar-left" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav">
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                               aria-haspopup="true" aria-expanded="false">Year <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">2014</a></li>
-                                <li><a href="#">2015</a></li>
-                                <li><a href="#">2016</a></li>
-                                <li><a href="#">2017</a></li>
-                                <li><a href="#">2018</a></li>
-                            </ul>
-                        </li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                               aria-haspopup="true" aria-expanded="false">Type <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Number of Applications</a></li>
-                                <li><a href="#">Average Salary</a></li>
-                                <li><a href="#">Top Occupations</a></li>
-                            </ul>
-                        </li>
-                    </ul>
+        <div class="container-fluid">
+            <div class="box" id="gridmaplabel">
+                <div class="map_container">
+
                 </div>
             </div>
-        </nav>
-        <section class="statistics">
-            <div class="container-fluid">
-                <div class="box" id="gridmap">
-                    <div class="map_container">
-                        <svg viewBox="0 0 820 800" preserveAspectRatio="xMinYMin slice" width="100%" height="100%" style="width: 100%; overflow: hidden;"></svg>
-                    </div>
-                </div>
-            </div>
-        </section>
-
+        </div>
     </section>
+</section>
 
-    <!-- load the d3.js library -->
-    <script src="http://d3js.org/d3.v4.min.js"></script>
-    <script src="https://rawgit.com/JesseCHowe/e9d4643984e168477d8fb8187bc1eda3/raw/7d5a4622bed0f9ca4e6392d29f32a30e502d2ff7/gridmap-layout-test.min.js"></script>
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+<!-- load the d3.js library -->
+<script src="http://d3js.org/d3.v4.min.js"></script>
+<script src="https://rawgit.com/JesseCHowe/e9d4643984e168477d8fb8187bc1eda3/raw/7d5a4622bed0f9ca4e6392d29f32a30e502d2ff7/gridmap-layout-test.min.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
 
-    <script src="../static/js/const.js"></script>
-    <script src="../static/js/script.js"></script>
-    <script src="../static/js/scriptGridMap.js"></script>
+<script src="../static/js/const.js"></script>
+<script src="../static/js/script.js"></script>
+<script src="../static/js/scriptGridMap.js"></script>
 
-    <script>
-        const DURATION = 750;
+<script>
+    const DURATION = 750;
 
-        var data = {{data.chart_data | safe}};
-        var dataname = {{data.dataname | safe}};
-        var states = {{data.states | safe }};
-        var domain = {{ data.domain | safe }}
-        console.log(data);
+    var data = {{data.chart_data | safe}};
+    var dataname = {{data.dataname | safe}};
+    var states = {{data.states | safe }};
+    var domain = {{ data.domain | safe }};
+    var category =
+    {{ data.category | safe }}
+    var categories =
+    {{ data.categories | safe }}
+    var categoryName = {{ data.categoryname | safe}};
+    console.log(data);
 
-        function updateData(plotname) {
-            $.post("", {'data': plotname}, function(data_infunc){
-                dataNew = JSON.parse(data_infunc.chart_data)
-                console.log(plotname);
-                console.log(dataNew);
-                drawdata(dataNew, "#" +  plotname);
-            })
-        }
+    //function updateData(index) {
+        //dataname = dataname.replace(/\s/g, '');
+        //$.post("POST", {
+        //    'op': 'updateLabel',
+        //    'chartname': dataname,
+        //    'category': category,
+        //    'categoryId': index
+        //}, function (data_infunc) {
+        //    dataNew = JSON.parse(data_infunc.chart_data);
+        //    datanameNew = JSON.parse(data_infunc.dataname);
+        //    statesNew = JSON.parse(data_infunc.states);
+        //    domainNew = JSON.parse(data_infunc.domain);
+        //    categoryNew = JSON.parse(data_infunc.category);
+        //    categoriesNew = JSON.parse(data_infunc.categories);
+        //    categoryNameNew = JSON.parse(data_infunc.categoryname);
+        //    console.log(dataNew);
+        //    updateDataGridmap(dataNew, datanameNew, categoryName, statesNew, domainNew, width_gridmap, height_gridmap,
+        //        grid_width, grid_height, margin);
+        //})
+    //}
 
-        drawGridMap(data, dataname, states, domain, "#gridmap", width_gridmap, height_gridmap,
-            grid_width, grid_height, margin);
-    </script>
+    drawGridMap(data, dataname, categoryName, states, domain, "#gridmap", "#svg", width_gridmap, height_gridmap,
+        grid_width, grid_height, margin, true);
+</script>
 </body>
 </html>

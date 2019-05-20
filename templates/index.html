@@ -27,12 +27,13 @@
                     <li><a href="{{ url_for('test') }}">Test</a></li>
                     <li><a href="{{ url_for('test2', dataset='H1B') }}">Test2</a></li>
                     <li><a href="{{ url_for('index') }}">Overview</a></li>
-                    <li><a href="{{ url_for('gridmap', chartname='Mean Wage') }}">Mean Wage</a></li>
-                    <li><a href="{{ url_for('gridmap', chartname='Total Petitions') }}">Total Petitions</a></li>
+                    <li><a href="{{ url_for('gridmap', chartname='MeanWage') }}">Mean Wage</a></li>
+                    <li><a href="{{ url_for('gridmap', chartname='TotalPetitions') }}">Total Petitions</a></li>
                     <li><a href="{{ url_for('heatmap', data_id=0) }}">Correlation</a></li>
                     <li><a href="{{ url_for('barchart') }}">Bar Chart</a></li>
                     <li><a href="{{ url_for('piechart', data_id=1) }}">Pie Chart</a></li>
-                    <!--<li><a href="#" onclick="updateP('EmployerPeitionRank')">Top Petitions</a></li>-->
+                    <li><a href="{{ url_for('gridmap', chartname='MeanWage OCCUPATION 0') }}">Mean Wage by Occupation</a></li>
+                    <li><a href="{{ url_for('gridmap', chartname='MeanWage YEAR 0') }}">Mean Wage By Year</a></li>
                 </ul>
             </li>
             <li>

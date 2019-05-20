@@ -153,7 +153,7 @@ function drawLinePlot(data, div, groups, myX, myWidth, myHeight, myMargin) {
         })
         .style("font-size", 15)
         .on("click", function (d) {
-            currentOpacity = d3.selectAll("." + "myclass" + groups.indexOf(d.group)).style("opacity")
+            currentOpacity = d3.selectAll("." + "myclass" + groups.indexOf(d.group)).style("opacity");
             d3.selectAll("." + "myclass" + groups.indexOf(d.group)).transition().style("opacity", currentOpacity == 1 ? 0 : 1)
 
         })

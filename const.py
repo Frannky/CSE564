@@ -21,6 +21,30 @@ STATUS_PERM = ['Certified', 'Certified-Expired', 'Denied', 'Withdrawn']
 EDUCATION = ['Doctorate (PhD)', "Master's", "Bachelor's", "Associate's", 'High School/GED',
              'Other Degree (JD, MD, etc.)', 'None']
 
+OCCUPATION = {
+    11: "Management",
+    13: "Business and Finacial Operations",
+    15: "Computer and Mathematical",
+    17: "Architecture and Engineering",
+    19: "Life, Physical, and Social Science Occupation",
+    21: "Community and Social Service",
+    23: "Legal",
+    25: "Education, Training, and Library",
+    27: "Arts, Design, Entertainment, Sports, and Media",
+    29: "Healthcare Practitioners and Technical",
+    31: "Healthcare Support",
+    33: "Protective Service",
+    35: "Food Preparation and Serving Related",
+    37: "Building and Grounds Cleaning and Maintenance",
+    39: "Personal Care and Service",
+    41: "Sales and Related",
+    43: "Office and Administrative Support",
+    45: "Farming, Fishing, and Forestry",
+    47: "Construction and Extration",
+    49: "Installation, Maintenance, and Repair",
+    51: "Production",
+    53: "Transportation and Material Moving"}
+
 YEARS = [2014, 2015, 2016, 2017, 2018]
 
 NUM_COLUMN_H1B = 11
