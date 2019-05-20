@@ -13,7 +13,9 @@ var margin_scatterplot = {
 };
 
 var grid_width = 70,
-    grid_height = 70;
+    grid_height = 70,
+    grid_width_dash = 30,
+    grid_height_dash = 30;
 
 var width_heatmap = 750,
     height_heatmap = 750,
@@ -22,7 +24,11 @@ var width_heatmap = 750,
     width_stackedbarchart = 900,
     height_stackedbarchart = 750,
     width_gridmap = 820,
-    height_gridmap = 800;
+    height_gridmap = 800,
+    width_gridmap_dash = 650,
+    height_gridmap_dash = 300,
+    width_scatter_dash = 400,
+    height_scatter_dash = 225;
 
 var padding_heatmap = 0.01;
 var padding_domain = 0.01;

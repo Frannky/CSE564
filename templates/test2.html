@@ -11,150 +11,164 @@
 </head>
 
 <body>
-    <aside class="side-nav" id="show-side-navigation1">
-        <i class="fa fa-bars close-aside hidden-sm hidden-md hidden-lg" data-close="show-side-navigation1"></i>
-        <div class="heading">
-            <div class="info">
-                <h3><a href="#">Final Project</a></h3>
-                <p>Visualization</p>
+<aside class="side-nav" id="show-side-navigation1">
+    <i class="fa fa-bars close-aside hidden-sm hidden-md hidden-lg" data-close="show-side-navigation1"></i>
+    <div class="heading">
+        <div class="info">
+            <h3><a href="#">Final Project</a></h3>
+            <p>Visualization</p>
+        </div>
+    </div>
+    <ul class="categories">
+        <li>
+            <i class="fal fa-calendar-alt" aria-hidden="true"></i>
+            <a href="#"> H1B</a>
+            <ul class="side-nav-dropdown">
+                <li><a href="{{ url_for('index') }}">Overview</a></li>
+            </ul>
+        </li>
+</aside>
+
+<section id="contents">
+    <div class="welcome">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-11">
+                    <div class="content">
+                        <h2>Overview for H1B data</h2>
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <div class="content">
+                        <h2><a href="#"><i data-show="show-side-navigation1" class="fas fa-toggle-on show-side-btn"></i></a>
+                        </h2>
+                    </div>
+                </div>
             </div>
         </div>
-        <ul class="categories">
-            <li>
-                <i class="fal fa-calendar-alt" aria-hidden="true"></i>
-                <a href="#"> H1B</a>
-                <ul class="side-nav-dropdown">
-                    <li><a href="{{ url_for('index') }}">Overview</a></li>
-                </ul>
-            </li>
-    </aside>
+    </div>
 
-    <section id="contents">
-        <div class="welcome">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-11">
-                        <div class="content">
-                            <h2>Overview for H1B data</h2>
+    <section class="charts">
+        <div class="container-fluid">
+            <div class="box" id="gridmap">
+                <div class="map_container">
+                    <svg id="svg0" viewBox="0 0 820 500" preserveAspectRatio="xMinYMin slice" width="100%" height="100%"
+                         style="width: 100%; overflow: hidden;"></svg>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="charts">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="box"">
+                        <div id="lineplot" class="map_container">
+                            <h3>Line Plot</h3>
+                            <svg id="svgline" viewBox="0 0 500 500" preserveAspectRatio="xMinYMin slice" width="100%"
+                                 height="100%"
+                                 style="width: 100%; overflow: hidden;"></svg>
                         </div>
                     </div>
-                    <div class="col-md-1">
-                        <div class="content">
-                            <h2><a href="#"><i data-show="show-side-navigation1" class="fas fa-toggle-on show-side-btn"></i></a></h2>
-                        </div>
+                </div>
+                <div class="col-md-6">
+                    <div id="scatterplot" class="chart-container">
+                        <h3>Scatter Plot</h3>
+                        <svg id="svgscatter" viewBox="0 0 400 400" preserveAspectRatio="xMinYMin slice" width="100%"
+                             height="100%"
+                             style="width: 100%; overflow: hidden;"></svg>
                     </div>
                 </div>
             </div>
         </div>
-
-        <section class="charts">
-            <div class="container-fluid">
-                <div class="box" id="gridmap">
-                    <div class="map_container">
-                        <svg id="svg0" viewBox="0 0 820 600" preserveAspectRatio="xMinYMin slice" width="100%" height="100%"
-                     style="width: 100%; overflow: hidden;"></svg>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section class="charts">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="chart-container">
-                            <h3>Chart</h3>
-                            <canvas id="myChart"></canvas>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="chart-container">
-                            <h3>Chart2</h3>
-                            <canvas id="myChart2"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class='statis text-center'>
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="box bg-primary">
-                            <i class="fa fa-eye"></i>
-                            <h3>5,154</h3>
-                            <p class="lead">Page views</p>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="box danger">
-                            <i class="fa fa-user-o"></i>
-                            <h3>245</h3>
-                            <p class="lead">User registered</p>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="box warning">
-                            <i class="fa fa-shopping-cart"></i>
-                            <h3>5,154</h3>
-                            <p class="lead">Product sales</p>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="box success">
-                            <i class="fa fa-handshake-o"></i>
-                            <h3>5,154</h3>
-                            <p class="lead">Transactions</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
     </section>
 
-    <!-- load the d3.js library -->
-    <script src="http://d3js.org/d3.v4.min.js"></script>
-    <script src="https://rawgit.com/JesseCHowe/e9d4643984e168477d8fb8187bc1eda3/raw/7d5a4622bed0f9ca4e6392d29f32a30e502d2ff7/gridmap-layout-test.min.js"></script>
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <section class='statis text-center'>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="box bg-primary">
+                        <i class="fa fa-eye"></i>
+                        <h3>5,154</h3>
+                        <p class="lead">Page views</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="box danger">
+                        <i class="fa fa-user-o"></i>
+                        <h3>245</h3>
+                        <p class="lead">User registered</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="box warning">
+                        <i class="fa fa-shopping-cart"></i>
+                        <h3>5,154</h3>
+                        <p class="lead">Product sales</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="box success">
+                        <i class="fa fa-handshake-o"></i>
+                        <h3>5,154</h3>
+                        <p class="lead">Transactions</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+<!-- load the d3.js library -->
+<script src="http://d3js.org/d3.v4.min.js"></script>
+<script src="https://rawgit.com/JesseCHowe/e9d4643984e168477d8fb8187bc1eda3/raw/7d5a4622bed0f9ca4e6392d29f32a30e502d2ff7/gridmap-layout-test.min.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
         integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
         crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
 
-    <script src="../static/js/const.js"></script>
-    <script src="../static/js/script.js"></script>
-    <script src="../static/js/scriptGridMap.js"></script>
+<script src="../static/js/const.js"></script>
+<script src="../static/js/script.js"></script>
+<script src="../static/js/scriptGridMap.js"></script>
+<script src="../static/js/scriptScatterPlot.js"></script>
 
-    <script src="https://rawgit.com/JesseCHowe/e9d4643984e168477d8fb8187bc1eda3/raw/7d5a4622bed0f9ca4e6392d29f32a30e502d2ff7/gridmap-layout-test.min.js"></script>
+<script src="https://rawgit.com/JesseCHowe/e9d4643984e168477d8fb8187bc1eda3/raw/7d5a4622bed0f9ca4e6392d29f32a30e502d2ff7/gridmap-layout-test.min.js"></script>
 
-    <script>
-        const DURATION = 750;
+<script>
+    const DURATION = 750;
+    // gridmap
+    var data = {{data.gm_chart_data | safe}};
+    var dataname = {{data.gm_dataname | safe}};
+    var states = {{data.gm_states | safe }};
+    var domain = {{ data.gm_domain | safe }};
+    var category =
+    {{ data.gm_category | safe }}
+    var categories =
+    {{ data.gm_categories | safe }}
+    var categoryName = {{ data.gm_categoryname | safe}};
+    console.log(data);
 
-        var data = {{data.chart_data | safe}};
-        var dataname = {{data.dataname | safe}};
-        var states = {{data.states | safe }};
-        var domain = {{ data.domain | safe }};
-        var category =
-        {{ data.category | safe }}
-        var categories =
-        {{ data.categories | safe }}
-        var categoryName = {{ data.categoryname | safe}};
-        console.log(data);
-
-        drawGridMap(data, dataname, categoryName, states, domain, "#gridmap", "#svg0", width_gridmap, height_gridmap-100,
+    drawGridMap(data, dataname, categoryName, states, domain, "#gridmap", "#svg0", width_gridmap_dash, height_gridmap_dash,
         grid_width, grid_height, margin, false);
 
-        function updateP(labelname) {
-            $.post("", {'data': labelname}, function(data_infunc){
-                dataNew = JSON.parse(data_infunc.chart_data)
-                console.log(labelname);
-                console.log(dataNew);
-            })
-        }
-    </script>
+    var data = {{data.sp_chart_data | safe}};
+    var myGroup = {{data.sp_group_data | safe}};
+    var myX = {{data.sp_x_data | safe}};
+
+    drawLinePlotDash(data, "#lineplot", myGroup, myX, width_scatter_dash, height_scatter_dash, margin);
+
+    function updateP(labelname) {
+        $.post("", {'data': labelname}, function (data_infunc) {
+            dataNew = JSON.parse(data_infunc.chart_data)
+            console.log(labelname);
+            console.log(dataNew);
+        })
+    }
+</script>
 </body>
 </html>

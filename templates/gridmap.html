@@ -112,27 +112,6 @@
     var categoryName = {{ data.categoryname | safe}};
     console.log(data);
 
-    //function updateData(index) {
-        //dataname = dataname.replace(/\s/g, '');
-        //$.post("POST", {
-        //    'op': 'updateLabel',
-        //    'chartname': dataname,
-        //    'category': category,
-        //    'categoryId': index
-        //}, function (data_infunc) {
-        //    dataNew = JSON.parse(data_infunc.chart_data);
-        //    datanameNew = JSON.parse(data_infunc.dataname);
-        //    statesNew = JSON.parse(data_infunc.states);
-        //    domainNew = JSON.parse(data_infunc.domain);
-        //    categoryNew = JSON.parse(data_infunc.category);
-        //    categoriesNew = JSON.parse(data_infunc.categories);
-        //    categoryNameNew = JSON.parse(data_infunc.categoryname);
-        //    console.log(dataNew);
-        //    updateDataGridmap(dataNew, datanameNew, categoryName, statesNew, domainNew, width_gridmap, height_gridmap,
-        //        grid_width, grid_height, margin);
-        //})
-    //}
-
     drawGridMap(data, dataname, categoryName, states, domain, "#gridmap", "#svg", width_gridmap, height_gridmap,
         grid_width, grid_height, margin, true);
 </script>

@@ -217,6 +217,7 @@ def mergeOther(dataOri, oriCategory, removeCategory, colname):
     data[colname] = data[colname].map(newCategoryMap)
     return [data, newCategoryName]
 
+
 @app.route("/scatterplot/<string:chartname>", methods = ['POST', 'GET'])
 def scatterplot(chartname):
     if chartname == "Petition By Education":
@@ -274,82 +275,37 @@ def test2(dataset):
     gm_data = json.dumps(gm_groups.to_dict(), indent=2)
     gm_dataDomain = [0, 375000, 750000, 1125000, 1500000]
 
-    data = {'chart_data': gm_data}
-    data['dataname'] = "'" + gm_dataset + "'"
-    data['states'] = ct.STATES
-    data['domain'] = gm_dataDomain
-    data['category'] = "'" + gm_category + "'"
-    data['categories'] = gm_categories
-    data['categoryname'] = "'" + gm_categoryName + "'"
-    return render_template('test2.html', data=data)
+    data = {'gm_chart_data': gm_data}
+    data['gm_dataname'] = "'" + gm_dataset + "'"
+    data['gm_states'] = ct.STATES
+    data['gm_domain'] = gm_dataDomain
+    data['gm_category'] = "'" + gm_category + "'"
+    data['gm_categories'] = gm_categories
+    data['gm_categoryname'] = "'" + gm_categoryName + "'"
 
-# def getScatterMDS(data):
-#     dataframe = applyMDS(data, 2)
-#     res = dataframe.rename(columns={'mds-1':'x', 'mds-2': 'y'})
-#     print("plot for MDS")
-#     print(res)
-#     return res
-#
-# def getScatterPCA(data):
-#     dataframe = applyPCA(data, 2)
-#     res = dataframe.rename(columns={'pc-1':'x', 'pc-2': 'y'})
-#     print("plot for PCA")
-#     print(res)
-#     return res
-#
-# def applyMDS(data, n_components):
-#     nCol = len(data.columns)
-#     # data = scale(data)
-#     res = MDS(n_components=n_components).fit_transform(data)
-#     # print("in applyMDS:", res)
-#     columns = ['mds-' + str(i) for i in range(1, n_components+1)]
-#     res = pd.DataFrame(data = res, columns =columns)
-#     return res
-#
-# def applyPCA(data, n_components):
-#     nCol = len(data.columns)
-#     # data = scale(data)
-#     res = PCA(n_components=n_components).fit_transform(data)
-#     # print("in applyPCA:", res)
-#     columns = ['pc-' + str(i) for i in range(1, n_components+1)]
-#     res = pd.DataFrame(data = res, columns =columns)
-#     return res
-#
-# def getPCAScree(data):
-#     # @ x: number of omponents
-#     # @ y: ratio of variance explained
-#     # @ explained_variance_ratio_
-#     #     Percentage of variance explained by each of the selected components
-#     nCol = len(data.columns)
-#     # data = scale(data)
-#     xVals = [i for i in range(1, nCol + 1)]
-#     yVals = PCA(n_components=nCol).fit(data).explained_variance_ratio_
-#     # print("estimated n_com:", PCA(n_components=nCol).fit(data).components_)
-#
-#     for i in range(1, len(yVals)):
-#         yVals[i] += yVals[i-1]
-#     dataframe = pd.DataFrame({'x':xVals, 'y': yVals})
-#     return dataframe
-#
-# def getElbow(data):
-#     # @ x: number of clusters
-#     # @ y: sum of squared distances
-#     # @ Objective - Minimize squared error
-#     #     J = \sum_{j=1}^{k}\sum_{i=1}^{n} (||x_{i}^{j}-c_{j}||)^2
-#     #     @ k: # clusters
-#     #     @ n: # cases
-#     #     @ x: case
-#     #     @ c: centroid for cluster
-#     # @ inertia_: float
-#     #     Kmeans Attribute
-#     #     Sum of squared distances of samples to their cloest cluster center.
-#     xVals = []
-#     yVals = []
-#     for i in range(2, 12):
-#         xVals.append(i)
-#         yVals.append(KMeans(n_clusters = i).fit(data).inertia_)
-#     dataframe = pd.DataFrame({'x':xVals, 'y': yVals})
-#     return dataframe
+    #scatterplot: sp
+    sp_removeCategory = [1,2,3,4]
+    sp_dataToMerge, sp_group = mergeOther(dataH1B.copy(), ct.STATUS_H1B, sp_removeCategory, 'STATUS')
+    sp_data = sp_dataToMerge.groupby('YEAR').STATUS.apply(pd.value_counts)
+    sp_res = pd.DataFrame(columns=['x', 'y', 'group'])
+    sp_index = 0
+    for sp_x, sp_value in sp_data.iteritems():
+        sp_res.loc[sp_index] = [sp_x[0], sp_value, sp_x[1]]
+        sp_index = sp_index + 1
+    sp_data = sp_res
+    sp_dataGroup = sp_group
+    sp_dataX = sp_dataToMerge.YEAR.unique().tolist()
+
+    sp_chart_data = sp_data.to_dict(orient='records')
+    sp_chart_data = json.dumps(sp_chart_data, indent=2)
+    sp_group_data = json.dumps(sp_dataGroup, indent=2)
+    sp_x_data = json.dumps(sp_dataX, indent=2)
+
+    data['sp_chart_data'] = sp_chart_data
+    data['sp_group_data'] = sp_group_data
+    data['sp_x_data'] = sp_x_data
+
+    return render_template('test2.html', data=data)
 
 # data[Y].[:N] will get the top n companies in year Y
 def getEmployerPartition(data):

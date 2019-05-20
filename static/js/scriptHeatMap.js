@@ -33,7 +33,7 @@ function drawHeatmap(data, groupData, div, myWidth, myHeight, myMargin) {
         .style("stroke-width", "1");
 
     var color = d3.scaleLinear()
-    .range(rangeRed)
+    .range(rangeGreen)
     .domain([-1, 1]);
 
     drawDataHeatmap(data, svg, x, y, color);
