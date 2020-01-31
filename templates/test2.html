@@ -11,164 +11,250 @@
 </head>
 
 <body>
-<aside class="side-nav" id="show-side-navigation1">
-    <i class="fa fa-bars close-aside hidden-sm hidden-md hidden-lg" data-close="show-side-navigation1"></i>
-    <div class="heading">
-        <div class="info">
-            <h3><a href="#">Final Project</a></h3>
-            <p>Visualization</p>
-        </div>
-    </div>
-    <ul class="categories">
-        <li>
-            <i class="fal fa-calendar-alt" aria-hidden="true"></i>
-            <a href="#"> H1B</a>
-            <ul class="side-nav-dropdown">
-                <li><a href="{{ url_for('index') }}">Overview</a></li>
-            </ul>
-        </li>
-</aside>
-
-<section id="contents">
-    <div class="welcome">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-11">
-                    <div class="content">
-                        <h2>Overview for H1B data</h2>
-                    </div>
-                </div>
-                <div class="col-md-1">
-                    <div class="content">
-                        <h2><a href="#"><i data-show="show-side-navigation1" class="fas fa-toggle-on show-side-btn"></i></a>
-                        </h2>
-                    </div>
-                </div>
+    <aside class="side-nav" id="show-side-navigation1">
+        <i class="fa fa-bars close-aside hidden-sm hidden-md hidden-lg" data-close="show-side-navigation1"></i>
+        <div class="heading">
+            <div class="info">
+                <h3><a href="#">Final Project</a></h3>
+                <p>Visualization</p>
             </div>
         </div>
-    </div>
+        <ul class="categories">
+            <li>
+                <i class="fal fa-calendar-alt" aria-hidden="true"></i>
+                <a href="#"> H1B</a>
+                <ul class="side-nav-dropdown">
+                    <li><a href="{{ url_for('index') }}">Overview</a></li>
+                </ul>
+            </li>
+    </aside>
 
-    <section class="charts">
-        <div class="container-fluid">
-            <div class="box" id="gridmap">
-                <div class="map_container">
-                    <svg id="svg0" viewBox="0 0 820 500" preserveAspectRatio="xMinYMin slice" width="100%" height="100%"
-                         style="width: 100%; overflow: hidden;"></svg>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="charts">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="box"">
-                        <div id="lineplot" class="map_container">
-                            <h3>Line Plot</h3>
-                            <svg id="svgline" viewBox="0 0 500 500" preserveAspectRatio="xMinYMin slice" width="100%"
-                                 height="100%"
-                                 style="width: 100%; overflow: hidden;"></svg>
+    <section id="contents">
+        <div class="welcome">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-11">
+                        <div class="content">
+                            <h2>Overview for H1B data</h2>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="content">
+                            <h2><a href="#"><i data-show="show-side-navigation1" class="fas fa-toggle-on show-side-btn"></i></a></h2>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div id="scatterplot" class="chart-container">
-                        <h3>Scatter Plot</h3>
-                        <svg id="svgscatter" viewBox="0 0 400 400" preserveAspectRatio="xMinYMin slice" width="100%"
-                             height="100%"
-                             style="width: 100%; overflow: hidden;"></svg>
+            </div>
+        </div>
+
+        <section class="charts">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="chart-container">
+                            <h3>Chart</h3>
+                            <canvas id="myChart0"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <section class='statis text-center'>
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-3">
-                    <div class="box bg-primary">
-                        <i class="fa fa-eye"></i>
-                        <h3>5,154</h3>
-                        <p class="lead">Page views</p>
+        </section>
+        <section class="charts">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="chart-container">
+                            <h3>Chart</h3>
+                            <canvas id="myChart"></canvas>
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="box danger">
-                        <i class="fa fa-user-o"></i>
-                        <h3>245</h3>
-                        <p class="lead">User registered</p>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="box warning">
-                        <i class="fa fa-shopping-cart"></i>
-                        <h3>5,154</h3>
-                        <p class="lead">Product sales</p>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="box success">
-                        <i class="fa fa-handshake-o"></i>
-                        <h3>5,154</h3>
-                        <p class="lead">Transactions</p>
+                    <div class="col-md-6">
+                        <div class="chart-container">
+                            <h3>Chart2</h3>
+                            <canvas id="myChart2"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
+
+        <section class='statis text-center'>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="box bg-primary">
+                            <i class="fa fa-eye"></i>
+                            <h3>5,154</h3>
+                            <p class="lead">Page views</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="box danger">
+                            <i class="fa fa-user-o"></i>
+                            <h3>245</h3>
+                            <p class="lead">User registered</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="box warning">
+                            <i class="fa fa-shopping-cart"></i>
+                            <h3>5,154</h3>
+                            <p class="lead">Product sales</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="box success">
+                            <i class="fa fa-handshake-o"></i>
+                            <h3>5,154</h3>
+                            <p class="lead">Transactions</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </section>
-</section>
 
-<!-- load the d3.js library -->
-<script src="http://d3js.org/d3.v4.min.js"></script>
-<script src="https://rawgit.com/JesseCHowe/e9d4643984e168477d8fb8187bc1eda3/raw/7d5a4622bed0f9ca4e6392d29f32a30e502d2ff7/gridmap-layout-test.min.js"></script>
-<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <!-- load the d3.js library -->
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-        crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-        crossorigin="anonymous"></script>
+    <script src="../static/js/const.js"></script>
+    <script src="../static/js/script.js"></script>
 
-<script src="../static/js/const.js"></script>
-<script src="../static/js/script.js"></script>
-<script src="../static/js/scriptGridMap.js"></script>
-<script src="../static/js/scriptScatterPlot.js"></script>
+    <script>
+        const DURATION = 750;
 
-<script src="https://rawgit.com/JesseCHowe/e9d4643984e168477d8fb8187bc1eda3/raw/7d5a4622bed0f9ca4e6392d29f32a30e502d2ff7/gridmap-layout-test.min.js"></script>
+        {#var data = {{data.chart_data | safe}};#}
+        {##}
+        {#console.log(data);#}
+        {##}
+        {#function updateP(labelname) {#}
+        {#    $.post("", {'data': labelname}, function(data_infunc){#}
+        {#        dataNew = JSON.parse(data_infunc.chart_data)#}
+        {#        console.log(labelname);#}
+        {#        console.log(dataNew);#}
+        {#    })#}
+        {#}#}
 
-<script>
-    const DURATION = 750;
-    // gridmap
-    var data = {{data.gm_chart_data | safe}};
-    var dataname = {{data.gm_dataname | safe}};
-    var states = {{data.gm_states | safe }};
-    var domain = {{ data.gm_domain | safe }};
-    var category =
-    {{ data.gm_category | safe }}
-    var categories =
-    {{ data.gm_categories | safe }}
-    var categoryName = {{ data.gm_categoryname | safe}};
-    console.log(data);
+        ////////////////////////////////////////////////////////////////
 
-    drawGridMap(data, dataname, categoryName, states, domain, "#gridmap", "#svg0", width_gridmap_dash, height_gridmap_dash,
-        grid_width, grid_height, margin, false);
 
-    var data = {{data.sp_chart_data | safe}};
-    var myGroup = {{data.sp_group_data | safe}};
-    var myX = {{data.sp_x_data | safe}};
 
-    drawLinePlotDash(data, "#lineplot", myGroup, myX, width_scatter_dash, height_scatter_dash, margin);
+var yearRingChart   = d3.pieChart("#myChart"),
+    spendHistChart  = d3.barChart("#myChart0"),
+    spenderRowChart = d3.rowChart("#myChart2");
+var table = d3.dataTable('#table');
+// use static or load via d3.csv("spendData.csv", function(error, spendData) {/* do stuff */});
+var spendData = [
+    {Name: 'Jeff', Emails: '1400', Year: 2001},
+    {Name: 'James', Emails: '1000', Year: 2001},
+    {Name: 'Kay', Emails: '4000', Year: 2001},
+    {Name: 'Jeff', Emails: '7000', Year: 2000},
+    {Name: 'James', Emails: '2000', Year: 2000},
+    {Name: 'James', Emails: '5000', Year: 1999},
+    {Name: 'Kay', Emails: '3000', Year: 1999},
+    {Name: 'Richard', Emails: '6000', Year: 2001},
+    {Name: 'Mathew', Emails: '1000', Year: 2001},
+    {Name: 'Sally', Emails: '4000', Year: 2001},
+    {Name: 'Richard', Emails: '2000', Year: 2000},
+    {Name: 'Mathew', Emails: '8000', Year: 2000},
+    {Name: 'Mathew', Emails: '5000', Year: 1999},
+    {Name: 'Sally', Emails: '3000', Year: 1999}
+];
+// normalize/parse data
+spendData.forEach(function(d) {
+    d.Emails = d.Emails.match(/\d+/)[0];
+});
+// set crossfilter
+var ndx = crossfilter(spendData),
+    yearDim  = ndx.dimension(function(d) {return +d.Year;}),
+    spendDim = ndx.dimension(function(d) {return Math.floor(d.Emails/10);}),
+    nameDim  = ndx.dimension(function(d) {return d.Name;}),
+    spendPerYear = yearDim.group().reduceSum(function(d) {return +d.Emails;}),
+    spendPerName = nameDim.group().reduceSum(function(d) {return +d.Emails;}),
+    spendHist    = spendDim.group().reduceCount();
 
-    function updateP(labelname) {
-        $.post("", {'data': labelname}, function (data_infunc) {
-            dataNew = JSON.parse(data_infunc.chart_data)
-            console.log(labelname);
-            console.log(dataNew);
-        })
-    }
-</script>
+
+var colorScale = d3.scaleOrdinal()
+            .domain(["Year 1", "Year 2", "Year 3"])
+            .range(["#fc8d59", "#998ec3", "#7fbf7b"]);
+
+
+  yearRingChart
+    .width(300)
+    .height(300)
+    .dimension(yearDim)
+    .group(spendPerYear)
+    .innerRadius(50)
+    .colors(colorScale)
+    .controlsUseVisibility(true);
+
+
+var colorScale1 = d3.scaleOrdinal()
+            //.domain(["Year 1", "Year 2", "Year 3"])
+            .range(["#99d8c9"]);
+
+    //rowChart.colors(colorScale1);
+
+  spendHistChart
+    .dimension(spendDim)
+    .group(spendHist)
+    .x(d3.scaleLinear().domain([100,1000]))
+    .xUnits(function(){return 15;})
+    .elasticY(true)
+    .colors(colorScale1)
+    .controlsUseVisibility(true);
+spendHistChart.xAxis().tickFormat(function(d) {return d*10}); // convert back to base unit
+spendHistChart.yAxis().ticks(2);
+
+spenderRowChart
+    .dimension(nameDim)
+    .group(spendPerName)
+    .elasticX(true)
+    .colors(colorScale1)
+    .controlsUseVisibility(true);
+var allDollars = ndx.groupAll().reduceSum(function(d) { return +d.Emails; });
+table
+    .dimension(spendDim)
+    .group(function(d) {
+        return d.value;
+    })
+    .showGroups(false)
+    .columns(['Name',
+              {
+                  label: 'Emails',
+                  format: function(d) {
+                      return '' + d.Emails;
+                  }
+              },
+              'Year',
+              {
+                  label: 'Percent of Total',
+                  format: function(d) {
+                      return Math.floor((d.Emails / allDollars.value()) * 100) + '%';
+                  }
+              }]);
+d3.select('#download')
+    .on('click', function() {
+        var data = nameDim.top(Infinity);
+        if(d3.select('#download-type input:checked').node().value==='table') {
+            data = data.map(function(d) {
+                var row = {};
+                table.columns().forEach(function(c) {
+                    row[table._doColumnHeaderFormat(c)] = table._doColumnValueFormat(c, d);
+                });
+                return row;
+            });
+        }
+        var blob = new Blob([d3.csv.format(data)], {type: "text/csv;charset=utf-8"});
+        saveAs(blob, 'data.csv');
+    });
+dc.renderAll();
+
+
+
+    </script>
 </body>
 </html>

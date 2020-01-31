@@ -324,8 +324,8 @@ def getEmployerPartitionForYear(data, num):
     return res
 
 if __name__ == "app":
-    dataH1B = pd.read_csv(ct.PATH_H1B + "numeric" + ct.EXT_TO, low_memory=False)
-    dataPWD = pd.read_csv(ct.PATH_PWD + "numeric" + ct.EXT_TO, low_memory=False)
-    dataPERM = pd.read_csv(ct.PATH_PERM + "numeric" + ct.EXT_TO, low_memory=False)
+    dataH1B = pd.read_csv('/Users/hang/PycharmProjects/EmploymentOfForeignersVisualization/data/H-1B_numeric.csv', low_memory=False)
+    dataPWD = pd.read_csv('/Users/hang/PycharmProjects/EmploymentOfForeignersVisualization/data/PWD_numeric.csv', low_memory=False)
+    dataPERM = pd.read_csv('/Users/hang/PycharmProjects/EmploymentOfForeignersVisualization/data/PERM_numeric.csv', low_memory=False)
     dataEmployerPartition = getEmployerPartition(dataH1B)
     app.run(debug=True)
